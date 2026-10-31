@@ -16,6 +16,7 @@
       --green-bg: rgba(34, 197, 94, 0.15);
       --red: #ef4444;
       --red-bg: rgba(239, 68, 68, 0.15);
+      --gray-val: #94a3b8;
       --cyan: #38bdf8;
       --cyan-bg: rgba(56, 189, 248, 0.15);
       --gold: #fbbf24;
@@ -41,13 +42,11 @@
     .status-dot.open { background: #22c55e; }
     
     .search-row { display: flex; align-items: center; gap: 8px; position: relative; }
-    /* Tetikleyici Sahte Arama Kutusu */
     .search-box { flex: 1; display: flex; align-items: center; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 10px 12px; gap: 8px; cursor: pointer; }
     .search-box-text { color: #64748b; font-size: 14px; flex: 1; }
-    
     .icon-btn { width: 38px; height: 38px; border-radius: 12px; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; }
 
-    /* KAYAN ŞERİT */
+    /* KAYAN ŞERİT (SLIDE BAR) */
     .tape-container { margin-top: 10px; overflow: hidden; white-space: nowrap; position: relative; display: flex; }
     .tape-track { display: flex; gap: 10px; animation: tickerSlide 24s linear infinite; }
     .tape-track:hover, .tape-track:active { animation-play-state: paused; }
@@ -56,40 +55,44 @@
     .tape-title { color: #cbd5e1; }
     .tape-val.up { color: var(--green); }
     .tape-val.down { color: var(--red); }
+    .tape-val.flat { color: var(--gray-val); }
 
     /* SAYFALAR */
     .page-section { display: none; padding: 14px 16px; }
     .page-section.active { display: block; }
-    .stock-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.04); cursor: pointer; }
-    .stock-left { display: flex; align-items: center; gap: 12px; }
-    .stock-avatar { width: 40px; height: 40px; border-radius: 12px; background: #1e293b; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: #e2e8f0; border: 1px solid rgba(255, 255, 255, 0.05); }
-    .stock-meta { display: flex; flex-direction: column; gap: 2px; }
-    .stock-code { font-size: 15px; font-weight: 700; display:flex; align-items:center; gap:6px; }
-    .fav-star { color: var(--gold); font-size: 12px; }
-    .stock-title { font-size: 11px; color: var(--text-muted); max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .stock-right { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
-    .stock-price { font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; }
-    .stock-badge { font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 6px; font-variant-numeric: tabular-nums; }
-    .stock-badge.up { background: var(--green-bg); color: var(--green); }
-    .stock-badge.down { background: var(--red-bg); color: var(--red); }
 
+    /* YENİ LİSTE ŞABLONU (AVATARSIZ, İSİM ALTTA, RENKLİ YÜZDE SAĞ ALTTA) */
+    .stock-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); cursor: pointer; }
+    .stock-left { display: flex; align-items: center; gap: 14px; }
+    .fav-star-container { font-size: 18px; width: 20px; display: flex; justify-content: center; align-items: center; }
+    .stock-meta { display: flex; flex-direction: column; gap: 3px; }
+    .stock-code { font-size: 15px; font-weight: 700; color: #fff; letter-spacing: 0.3px; }
+    .stock-title { font-size: 12px; color: var(--ios-gray); max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .stock-right { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+    .stock-price { font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; color: #fff; }
+    
+    /* Yüzde Renklendirme Sınıfları */
+    .pct-val { font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .pct-val.up { color: var(--green); }
+    .pct-val.down { color: var(--red); }
+    .pct-val.flat { color: var(--gray-val); }
+
+    /* HABERLER */
     .news-card { background: #0d131f; border: 1px solid #1e293b; border-radius: 14px; padding: 14px; margin-bottom: 12px; cursor: pointer; }
     .news-tag { background: #92400e; color: #fef08a; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 6px; }
     .news-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; line-height: 1.4; color: #f1f5f9; }
     .news-snippet { font-size: 12px; color: #94a3b8; line-height: 1.4; }
     .news-date { font-size: 10px; color: #64748b; margin-top: 6px; }
 
-    /* MODAL GENEL (Detay vb.) */
+    /* MODAL GENEL */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 200; display: none; align-items: flex-end; }
     .modal-sheet { background: #0b1120; border-top: 1px solid #1e293b; border-radius: 24px 24px 0 0; width: 100%; max-height: 85vh; overflow-y: auto; padding: 20px; animation: slideUp 0.25s ease-out; }
     @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
     .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
     .modal-close { background: #1e293b; border: none; color: #94a3b8; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; }
 
-    /* YENİ TAM EKRAN ARAMA MODALI */
-    #fullSearchModal {
-      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); z-index: 300; display: none; flex-direction: column; padding-top: 20px;
-    }
+    /* TAM EKRAN ARAMA MODALI */
+    #fullSearchModal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); z-index: 300; display: none; flex-direction: column; padding-top: 20px; }
     .fs-header { display: flex; align-items: center; padding: 10px 16px; gap: 12px; }
     .fs-input-container { flex: 1; background: var(--ios-dark); border-radius: 12px; display: flex; align-items: center; padding: 10px 12px; gap: 8px; }
     .fs-input-container input { flex: 1; background: transparent; border: none; outline: none; color: #fff; font-size: 16px; }
@@ -98,14 +101,6 @@
     .fs-section-title { font-size: 11px; font-weight: 700; color: var(--cyan); letter-spacing: 1px; padding: 16px 16px 8px; text-transform: uppercase; }
     .fs-results { padding: 0 16px; overflow-y: auto; flex: 1; padding-bottom: 50px; }
     .fs-list-box { background: var(--ios-dark); border-radius: 14px; overflow: hidden; }
-    .fs-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); }
-    .fs-item:last-child { border-bottom: none; }
-    .fs-item-left { display: flex; align-items: center; gap: 14px; }
-    .fs-item-star { font-size: 18px; cursor: pointer; }
-    .fs-item-texts { display: flex; flex-direction: column; gap: 2px; }
-    .fs-item-code { font-size: 15px; font-weight: 600; color: #fff; }
-    .fs-item-name { font-size: 12px; color: var(--ios-gray); max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .fs-item-arrow { color: #48484a; font-size: 16px; font-weight: bold; }
 
     /* DİĞER (ARAÇLAR) */
     .tool-card { background: #0f172a; border: 1px solid #1e293b; border-radius: 16px; padding: 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; cursor: pointer; }
@@ -136,7 +131,6 @@
     </div>
 
     <div class="search-row">
-      <!-- TIKLANABİLİR SAHTE ARAMA KUTUSU (Modalı Tetikler) -->
       <div class="search-box" onclick="openSearchModal()">
         <span>🔍</span>
         <div class="search-box-text">BIST hisse veya fon ara...</div>
@@ -145,13 +139,13 @@
       <div class="icon-btn" onclick="openSettingsModal()">⚙️</div>
     </div>
 
-    <!-- KESİNTİSİZ AKAN ENDEKS BANTI -->
+    <!-- KAYAN ŞERİT -->
     <div class="tape-container">
       <div class="tape-track" id="tapeTrack"></div>
     </div>
   </div>
 
-  <!-- YENİ TAM EKRAN ARAMA MODALI (FOTOĞRAFTAKİ TASARIM) -->
+  <!-- YENİ TAM EKRAN ARAMA MODALI -->
   <div id="fullSearchModal">
     <div class="fs-header">
       <div class="fs-input-container">
@@ -165,13 +159,12 @@
     <div class="fs-results">
       <div class="fs-section-title">HİSSE</div>
       <div class="fs-list-box" id="fsResultList">
-        <!-- Arama sonuçları JS ile buraya dolacak -->
         <div style="padding: 20px; text-align: center; color: var(--ios-gray); font-size: 13px;">Aramak için yazmaya başlayın...</div>
       </div>
     </div>
   </div>
 
-  <!-- 1. ANASAYFA (YALNIZCA FAVORİLER) -->
+  <!-- 1. ANASAYFA (FAVORİLER) -->
   <div id="view-anasayfa" class="page-section active">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
       <div style="font-size:18px; font-weight:700;">Favorilerim (<span id="favCount">0</span>)</div>
@@ -195,20 +188,17 @@
     <div style="font-size:26px; font-weight:800; margin:4px 0 16px;" id="totalPortfolioValue">0,00 ₺</div>
 
     <div style="margin-bottom:14px; position:relative;">
-      <!-- Portföy içi mini arama kutusu eski halinde bırakıldı -->
       <div class="search-box" style="background:#0f172a; cursor:pointer;" onclick="openSearchModalForPortfolio()">
         <span>🔍</span>
         <div class="search-box-text">Hisse ara ve ekle (örn: tuprs, doas)...</div>
       </div>
     </div>
-
     <div id="portfolioListContainer"></div>
   </div>
 
-  <!-- 4. DİĞER (ARAÇLAR) -->
+  <!-- 4. DİĞER -->
   <div id="view-diger" class="page-section">
     <div style="font-size:18px; font-weight:700; margin-bottom:16px;">Finansal Araçlar</div>
-    
     <div class="tool-card" onclick="openAltinPrimScreen()">
       <div class="tool-left">
         <div class="tool-icon">🪙</div>
@@ -281,24 +271,23 @@
           <div style="font-size:12px; color:#64748b;" id="modalStockName">Türk Hava Yolları</div>
         </div>
         <div style="display:flex; gap:10px; align-items:center;">
-          <button id="modalFavBtn" style="background:transparent; border:none; font-size:20px; cursor:pointer;" onclick="toggleModalFav()">⭐</button>
+          <div class="fav-star-container" style="cursor:pointer;" onclick="toggleModalFav()">
+            <span id="modalFavBtn" style="font-size:22px; color:var(--gold);">★</span>
+          </div>
           <button class="modal-close" onclick="closeModal()">✕</button>
         </div>
       </div>
-
       <div style="background:#0f172a; border:1px solid #1e293b; border-radius:14px; padding:14px; display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
         <div>
           <div style="font-size:11px; color:#64748b;">Son Fiyat</div>
           <div style="font-size:20px; font-weight:800;" id="modalStockPrice">0,00 ₺</div>
         </div>
-        <div id="modalStockBadge" class="stock-badge up">%0,00</div>
+        <div id="modalStockBadge" class="pct-val up">%0,00</div>
       </div>
-
       <div id="modalIndexStocksContainer" style="display:none; margin-bottom:18px;">
         <div style="font-size:14px; font-weight:700; margin-bottom:8px; color:var(--cyan);">Endekse Dahil Hisseler</div>
         <div class="stock-list" id="modalIndexList"></div>
       </div>
-
       <div style="font-size:15px; font-weight:700; margin-bottom:10px;">İlgili Haberler</div>
       <div id="modalNewsContainer"></div>
     </div>
@@ -361,7 +350,7 @@
     let isMarketOpenGlobal = false;
     let selectedStockForModal = null;
     let editingPositionIndex = -1;
-    let searchMode = 'general'; // 'general' or 'portfolio'
+    let searchMode = 'general';
 
     function triggerHaptic() { if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light'); }
     function safeOpenLink(url) {
@@ -392,7 +381,6 @@
       if (viewId === 'anasayfa') renderMainList();
     }
 
-    /* YENİ TAM EKRAN ARAMA MANTIĞI */
     function openSearchModal() {
       triggerHaptic();
       searchMode = 'general';
@@ -422,6 +410,13 @@
       document.getElementById('fsInput').focus();
     }
 
+    function getBadgeClass(changeStr) {
+      if (String(changeStr).includes('+')) return 'up';
+      if (String(changeStr).includes('-')) return 'down';
+      return 'flat';
+    }
+
+    // ARAMA SONUÇLARI LİSTESİ ŞABLONU
     function handleFullSearch() {
       const q = document.getElementById('fsInput').value.trim().toUpperCase();
       const container = document.getElementById('fsResultList');
@@ -437,15 +432,16 @@
       matches.forEach(m => {
         const isFav = favorites.includes(m.code);
         html += `
-          <div class="fs-item" onclick="selectSearchItem('${m.code}')">
-            <div class="fs-item-left">
-              <div class="fs-item-star" style="color: ${isFav ? 'var(--gold)' : 'var(--ios-gray)'};" onclick="event.stopPropagation(); toggleFavFromSearch('${m.code}')">${isFav ? '★' : '☆'}</div>
-              <div class="fs-item-texts">
-                <span class="fs-item-code">${m.code}</span>
-                <span class="fs-item-name">${m.name}</span>
+          <div class="stock-row" style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05);" onclick="selectSearchItem('${m.code}')">
+            <div class="stock-left">
+              <div class="fav-star-container" onclick="event.stopPropagation(); toggleFavFromSearch('${m.code}')">
+                <span style="color: ${isFav ? 'var(--gold)' : 'var(--ios-gray)'};">${isFav ? '★' : '☆'}</span>
+              </div>
+              <div class="stock-meta">
+                <div class="stock-code">${m.code}</div>
+                <div class="stock-title">${m.name}</div>
               </div>
             </div>
-            <div class="fs-item-arrow">></div>
           </div>
         `;
       });
@@ -454,9 +450,8 @@
 
     function selectSearchItem(code) {
       closeSearchModal();
-      if (searchMode === 'general') {
-        openStockDetail(code);
-      } else if (searchMode === 'portfolio') {
+      if (searchMode === 'general') openStockDetail(code);
+      else if (searchMode === 'portfolio') {
         const item = globalData.find(d => d.code === code);
         if (item) openAddPortfolioModal(item, -1);
       }
@@ -467,11 +462,10 @@
       const idx = favorites.indexOf(code);
       if (idx > -1) favorites.splice(idx, 1); else favorites.push(code);
       localStorage.setItem('bist_favs', JSON.stringify(favorites));
-      handleFullSearch(); // Ekranı yenile ki yıldız dolsun/boşalsın
+      handleFullSearch();
       renderMainList();
     }
 
-    // AYARLAR VE ALTIN S1 MODALLARI
     function openSettingsModal() { triggerHaptic(); document.getElementById('settingsModal').style.display = 'flex'; }
     function closeSettingsModal() { document.getElementById('settingsModal').style.display = 'none'; }
     function openAltinPrimScreen() {
@@ -491,7 +485,6 @@
       document.getElementById('primAltinS1Price').innerText = p.s1Price + ' ₺';
       document.getElementById('primSertifikaGram').innerText = p.sertifikaGram + ' ₺';
       document.getElementById('primSpotGram').innerText = p.spotGram + ' ₺';
-
       const badge = document.getElementById('primStatusBadge');
       const diff = document.getElementById('primDiffText');
       badge.innerText = `${p.isPrim ? '📈' : '📉'} ${p.durumMetni} (%${p.yuzdeFark})`;
@@ -530,14 +523,14 @@
       macroList.forEach(code => {
         const item = globalData.find(d => d.code === code);
         if (item) {
-          const isUp = String(item.change).includes('+') || (!String(item.change).includes('-') && item.change !== '0' && item.change !== '%0,00');
-          const badgeClass = isUp ? 'up' : 'down';
+          const badgeClass = getBadgeClass(item.change);
           html += `<div class="tape-item" onclick="openStockDetail('${item.code}')"><span class="tape-title">${item.name}</span><span class="tape-val ${badgeClass}">${item.price} ₺ ${item.change}</span></div>`;
         }
       });
       track.innerHTML = html + html;
     }
 
+    // ANA SAYFA LİSTESİ ŞABLONU (AVATARSIZ, YÜZDE RENKLİ)
     function renderMainList() {
       const container = document.getElementById('stockListContainer');
       container.innerHTML = '';
@@ -552,24 +545,35 @@
     }
 
     function createStockRow(item) {
-      const isUp = String(item.change).includes('+') || (!String(item.change).includes('-') && item.change !== '0' && item.change !== '%0,00');
+      const badgeClass = getBadgeClass(item.change);
+      const isFav = favorites.includes(item.code);
       const div = document.createElement('div');
       div.className = 'stock-row';
       div.onclick = () => openStockDetail(item.code);
       div.innerHTML = `
         <div class="stock-left">
-          <div class="stock-avatar">${item.code.substring(0,2)}</div>
+          <div class="fav-star-container" onclick="event.stopPropagation(); toggleFavFromMain('${item.code}')">
+            <span style="color: ${isFav ? 'var(--gold)' : 'var(--ios-gray)'};">${isFav ? '★' : '☆'}</span>
+          </div>
           <div class="stock-meta">
-            <div class="stock-code">${item.code} <span class="fav-star">★</span></div>
+            <div class="stock-code">${item.code}</div>
             <div class="stock-title">${item.name}</div>
           </div>
         </div>
         <div class="stock-right">
           <div class="stock-price">${item.price} ₺</div>
-          <div class="stock-badge ${isUp ? 'up' : 'down'}">${item.change}</div>
+          <div class="pct-val ${badgeClass}">${item.change}</div>
         </div>
       `;
       return div;
+    }
+    
+    function toggleFavFromMain(code) {
+      triggerHaptic();
+      const idx = favorites.indexOf(code);
+      if (idx > -1) favorites.splice(idx, 1); else favorites.push(code);
+      localStorage.setItem('bist_favs', JSON.stringify(favorites));
+      renderMainList();
     }
 
     function renderNewsList() {
@@ -597,9 +601,9 @@
       document.getElementById('modalStockName').innerText = item.name;
       document.getElementById('modalStockPrice').innerText = item.price + ' ₺';
       
-      const isUp = String(item.change).includes('+') || (!String(item.change).includes('-') && item.change !== '0' && item.change !== '%0,00');
+      const badgeClass = getBadgeClass(item.change);
       const badge = document.getElementById('modalStockBadge');
-      badge.className = 'stock-badge ' + (isUp ? 'up' : 'down');
+      badge.className = 'pct-val ' + badgeClass;
       badge.innerText = item.change;
 
       updateModalFavIcon();
@@ -645,7 +649,10 @@
     }
 
     function updateModalFavIcon() {
-      document.getElementById('modalFavBtn').innerText = favorites.includes(selectedStockForModal.code) ? '⭐' : '☆';
+      const isFav = favorites.includes(selectedStockForModal.code);
+      const favBtn = document.getElementById('modalFavBtn');
+      favBtn.innerText = isFav ? '★' : '☆';
+      favBtn.style.color = isFav ? 'var(--gold)' : 'var(--ios-gray)';
     }
 
     function toggleModalFav() {
@@ -660,7 +667,6 @@
 
     function closeModal() { document.getElementById('detailModal').style.display = 'none'; }
 
-    // PORTFÖY DÜZENLEME MANTIĞI
     function openAddPortfolioModal(stock, editIndex) {
       triggerHaptic();
       editingPositionIndex = editIndex;
@@ -707,6 +713,7 @@
       renderPortfolio();
     }
 
+    // PORTFÖY LİSTESİ ŞABLONU (Anasayfa ile tutarlı tasarım)
     function renderPortfolio() {
       const container = document.getElementById('portfolioListContainer');
       if (myPortfolio.length === 0) {
@@ -725,22 +732,26 @@
         const profitTL = (priceNum - pos.cost) * pos.lot;
         const profitPct = pos.cost > 0 ? ((priceNum - pos.cost) / pos.cost) * 100 : 0;
         totalVal += currentTotal;
-        const isUp = profitTL >= 0;
+        
+        const isUp = profitTL > 0;
+        const isFlat = profitTL === 0;
+        const badgeClass = isUp ? 'up' : (isFlat ? 'flat' : 'down');
         const badgeSign = isUp ? '+' : '';
+        
         const row = document.createElement('div');
         row.className = 'stock-row';
         row.onclick = () => openAddPortfolioModal(cur, idx);
         row.innerHTML = `
           <div class="stock-left">
-            <div class="stock-avatar">${pos.code.substring(0,2)}</div>
+            <div class="fav-star-container"></div>
             <div class="stock-meta">
               <div class="stock-code">${pos.code}</div>
-              <div class="stock-title">${pos.lot} Lot • Maliyet: ${pos.cost.toFixed(2)} ₺</div>
+              <div class="stock-title">${pos.lot} Lot • Maliyet: ${pos.cost.toLocaleString('tr-TR', {minimumFractionDigits: 2, maximumFractionDigits: 2})} ₺</div>
             </div>
           </div>
           <div class="stock-right">
             <div class="stock-price">${currentTotal.toLocaleString('tr-TR', {minimumFractionDigits: 2, maximumFractionDigits: 2})} ₺</div>
-            <div class="stock-badge ${isUp ? 'up' : 'down'}">${badgeSign}${profitTL.toLocaleString('tr-TR', {minimumFractionDigits: 2, maximumFractionDigits: 2})} ₺ (${badgeSign}%${profitPct.toFixed(2)})</div>
+            <div class="pct-val ${badgeClass}">${badgeSign}${profitTL.toLocaleString('tr-TR', {minimumFractionDigits: 2, maximumFractionDigits: 2})} ₺ (${badgeSign}%${profitPct.toFixed(2)})</div>
           </div>
         `;
         container.appendChild(row);

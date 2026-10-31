@@ -4,31 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
-  <title>Veri Terminali v4</title>
+  <title>Veri Terminali v4.1</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     :root {
-      --bg: #030712;
-      --card-bg: #0f172a;
-      --card-border: #1e293b;
-      --text: #ffffff;
-      --text-muted: #64748b;
-      --green: #22c55e;
-      --red: #ef4444;
-      --gray-val: #94a3b8;
-      --cyan: #38bdf8;
-      --cyan-bg: rgba(56, 189, 248, 0.15);
-      --gold: #fbbf24;
-      --ios-dark: #1c1c1e;
-      --ios-gray: #8e8e93;
+      --bg: #030712; --card-bg: #0f172a; --card-border: #1e293b;
+      --text: #ffffff; --text-muted: #64748b; --green: #22c55e; --red: #ef4444;
+      --gray-val: #94a3b8; --cyan: #38bdf8; --gold: #fbbf24;
+      --ios-dark: #1c1c1e; --ios-gray: #8e8e93;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif; }
     body { background-color: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 110px; overflow-x: hidden; }
 
-    /* ÜST AURORA & HEADER */
-    .top-aurora { background: radial-gradient(circle at 50% -20%, #1e1b4b 0%, #0c0a2a 45%, var(--bg) 85%); padding: 10px 14px 12px; position: sticky; top: 0; z-index: 40; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+    .top-aurora { background: radial-gradient(circle at 50% -20%, #1e1b4b 0%, #0c0a2a 45%, var(--bg) 85%); padding: 10px 14px 12px; position: sticky; top: 0; z-index: 40; backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
     .status-row { display: flex; justify-content: center; margin-bottom: 10px; }
     .status-chip { background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; color: #94a3b8; display: inline-flex; align-items: center; gap: 6px; }
     .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #ef4444; }
@@ -39,10 +27,10 @@
     .search-box-text { color: #64748b; font-size: 14px; flex: 1; }
     .icon-btn { width: 38px; height: 38px; border-radius: 12px; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.12); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; }
 
-    /* SABİT VE KESİNTİSİZ KAYAN SLIDE BAR */
+    /* KAYAN ŞERİT */
     .tape-container { margin-top: 12px; overflow: hidden; white-space: nowrap; position: relative; display: flex; width: 100%; height: 34px; align-items: center; }
     .tape-track { display: inline-flex; gap: 8px; animation: tickerSlide 26s linear infinite; }
-    .tape-track:hover, .tape-track:active { animation-play-state: paused; }
+    .tape-track:hover { animation-play-state: paused; }
     @keyframes tickerSlide { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
     .tape-item { background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 10px; padding: 6px 12px; font-size: 11px; font-weight: 600; display: inline-flex; gap: 6px; align-items: center; cursor: pointer; flex-shrink: 0; }
     .tape-title { color: #e2e8f0; font-weight: 700; }
@@ -50,11 +38,10 @@
     .tape-val.down { color: var(--red); }
     .tape-val.flat { color: var(--gray-val); }
 
-    /* SAYFALAR */
     .page-section { display: none; padding: 14px 16px; }
     .page-section.active { display: block; }
 
-    /* HİSSE LİSTE SATIRI (SEMBOL ÜSTTE, TAM İSİM ALTTA, SAĞDA FİYAT VE ALTINDA RENKLİ YÜZDE) */
+    /* LİSTE SATIRI ŞABLONU */
     .stock-row { display: flex; justify-content: space-between; align-items: center; padding: 13px 4px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); cursor: pointer; }
     .stock-row:active { background: rgba(255, 255, 255, 0.04); }
     .stock-left { display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1; }
@@ -69,39 +56,34 @@
     .pct-val.down { color: var(--red); }
     .pct-val.flat { color: var(--gray-val); }
 
-    /* TAM EKRAN ARAMA MODALI (iOS ŞABLONU) */
-    #fullSearchModal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); z-index: 300; display: none; flex-direction: column; padding-top: 14px; }
+    /* TAM EKRAN ARAMA MODALI */
+    #fullSearchModal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(25px); z-index: 300; display: none; flex-direction: column; padding-top: 14px; }
     .fs-header { display: flex; align-items: center; padding: 8px 16px; gap: 12px; }
     .fs-input-container { flex: 1; background: var(--ios-dark); border-radius: 12px; display: flex; align-items: center; padding: 10px 12px; gap: 8px; border: 1px solid rgba(255,255,255,0.1); }
     .fs-input-container input { flex: 1; background: transparent; border: none; outline: none; color: #fff; font-size: 16px; }
-    .fs-input-container input::placeholder { color: var(--ios-gray); }
     .fs-cancel-btn { background: transparent; border: none; color: var(--cyan); font-size: 16px; font-weight: 600; cursor: pointer; padding: 5px; }
     .fs-section-title { font-size: 11px; font-weight: 700; color: var(--cyan); letter-spacing: 0.8px; padding: 14px 20px 8px; text-transform: uppercase; }
     .fs-results { padding: 0 16px; overflow-y: auto; flex: 1; padding-bottom: 60px; }
     .fs-list-box { background: var(--ios-dark); border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06); }
     
     .fs-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.06); }
-    .fs-item:last-child { border-bottom: none; }
     .fs-item:active { background: rgba(255,255,255,0.06); }
     .fs-item-left { display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1; }
     .fs-star-btn { font-size: 22px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; border-radius: 50%; z-index: 5; }
-    .fs-star-btn:active { transform: scale(1.3); background: rgba(255,255,255,0.1); }
+    .fs-star-btn:active { transform: scale(1.3); }
 
-    /* HABERLER */
     .news-card { background: #0d131f; border: 1px solid #1e293b; border-radius: 14px; padding: 14px; margin-bottom: 12px; cursor: pointer; }
     .news-tag { background: #92400e; color: #fef08a; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 6px; }
     .news-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; line-height: 1.4; color: #f1f5f9; }
     .news-snippet { font-size: 12px; color: #94a3b8; line-height: 1.4; }
     .news-date { font-size: 10px; color: #64748b; margin-top: 6px; }
 
-    /* MODAL GENEL */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 200; display: none; align-items: flex-end; }
     .modal-sheet { background: #0b1120; border-top: 1px solid #1e293b; border-radius: 24px 24px 0 0; width: 100%; max-height: 85vh; overflow-y: auto; padding: 20px; animation: slideUp 0.25s ease-out; }
     @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
     .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
     .modal-close { background: #1e293b; border: none; color: #94a3b8; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; }
 
-    /* DİĞER (ARAÇLAR) */
     .tool-card { background: #0f172a; border: 1px solid #1e293b; border-radius: 16px; padding: 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; cursor: pointer; }
     .tool-left { display: flex; align-items: center; gap: 14px; }
     .tool-icon { width: 44px; height: 44px; border-radius: 12px; background: rgba(251, 191, 36, 0.15); color: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 20px; }
@@ -109,7 +91,6 @@
     .spinner { width: 32px; height: 32px; border: 3px solid rgba(56, 189, 248, 0.2); border-top-color: var(--cyan); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ALT BAR */
     .tabbar-container { position: fixed; bottom: 20px; left: 0; right: 0; display: flex; justify-content: center; z-index: 50; pointer-events: none; }
     .tabbar { pointer-events: auto; background: rgba(15, 23, 42, 0.92); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); padding: 6px 14px; border-radius: 32px; display: flex; gap: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); }
     .tab-item { display: flex; flex-direction: column; align-items: center; gap: 3px; background: transparent; border: none; color: #64748b; font-size: 10px; font-weight: 600; cursor: pointer; padding: 4px 10px; border-radius: 16px; }
@@ -120,13 +101,12 @@
 </head>
 <body>
 
-  <!-- AURORA HEADER -->
   <div class="top-aurora">
     <div class="status-row">
       <div class="status-chip">
         <span class="status-dot" id="statusDot"></span>
         <span id="marketStatusText">Piyasa Kapalı • 00:00:00</span>
-        <span style="color:var(--cyan); font-weight:800; margin-left:4px;">v4.0</span>
+        <span style="color:var(--cyan); font-weight:800; margin-left:4px;">v4.1</span>
       </div>
     </div>
 
@@ -139,29 +119,11 @@
       <div class="icon-btn" onclick="openSettingsModal()">⚙️</div>
     </div>
 
-    <!-- DOĞRUDAN HTML İÇİNE GÖMÜLÜ SLIDE BAR (ASLA KAYBOLMAZ) -->
     <div class="tape-container">
-      <div class="tape-track" id="tapeTrack">
-        <div class="tape-item" onclick="openStockDetail('XU100')"><span class="tape-title">BIST 100</span><span class="tape-val down">10.759,60 -%3,64</span></div>
-        <div class="tape-item" onclick="openStockDetail('XU050')"><span class="tape-title">BIST 50</span><span class="tape-val down">9.410,20 -%3,42</span></div>
-        <div class="tape-item" onclick="openStockDetail('XU030')"><span class="tape-title">BIST 30</span><span class="tape-val down">13.419,70 -%3,88</span></div>
-        <div class="tape-item" onclick="openStockDetail('USD')"><span class="tape-title">USD/TRY</span><span class="tape-val up">36,45 +%0,08</span></div>
-        <div class="tape-item" onclick="openStockDetail('EUR')"><span class="tape-title">EUR/TRY</span><span class="tape-val down">39,12 -%0,15</span></div>
-        <div class="tape-item" onclick="openStockDetail('GRAM')"><span class="tape-title">GRAM ALTIN</span><span class="tape-val down">6.191,78 ₺ -%3,56</span></div>
-        <div class="tape-item" onclick="openStockDetail('ALTIN.S1')"><span class="tape-title">ALTIN.S1</span><span class="tape-val down">68,55 ₺ -%2,27</span></div>
-        <!-- 2. Kopya (Sonsuz Döngü İçin) -->
-        <div class="tape-item" onclick="openStockDetail('XU100')"><span class="tape-title">BIST 100</span><span class="tape-val down">10.759,60 -%3,64</span></div>
-        <div class="tape-item" onclick="openStockDetail('XU050')"><span class="tape-title">BIST 50</span><span class="tape-val down">9.410,20 -%3,42</span></div>
-        <div class="tape-item" onclick="openStockDetail('XU030')"><span class="tape-title">BIST 30</span><span class="tape-val down">13.419,70 -%3,88</span></div>
-        <div class="tape-item" onclick="openStockDetail('USD')"><span class="tape-title">USD/TRY</span><span class="tape-val up">36,45 +%0,08</span></div>
-        <div class="tape-item" onclick="openStockDetail('EUR')"><span class="tape-title">EUR/TRY</span><span class="tape-val down">39,12 -%0,15</span></div>
-        <div class="tape-item" onclick="openStockDetail('GRAM')"><span class="tape-title">GRAM ALTIN</span><span class="tape-val down">6.191,78 ₺ -%3,56</span></div>
-        <div class="tape-item" onclick="openStockDetail('ALTIN.S1')"><span class="tape-title">ALTIN.S1</span><span class="tape-val down">68,55 ₺ -%2,27</span></div>
-      </div>
+      <div class="tape-track" id="tapeTrack"></div>
     </div>
   </div>
 
-  <!-- TAM EKRAN ARAMA MODALI -->
   <div id="fullSearchModal">
     <div class="fs-header">
       <div class="fs-input-container">
@@ -178,7 +140,6 @@
     </div>
   </div>
 
-  <!-- 1. ANASAYFA (FAVORİLER) -->
   <div id="view-anasayfa" class="page-section active">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
       <div style="font-size:18px; font-weight:700;">Favorilerim (<span id="favCount">0</span>)</div>
@@ -187,7 +148,6 @@
     <div class="stock-list" id="stockListContainer"></div>
   </div>
 
-  <!-- 2. HABERLER -->
   <div id="view-haberler" class="page-section">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
       <div style="font-size:18px; font-weight:700;">KAP & Borsa Haberleri</div>
@@ -196,7 +156,6 @@
     <div id="newsListContainer"></div>
   </div>
 
-  <!-- 3. PORTFÖY -->
   <div id="view-portfoy" class="page-section">
     <div style="font-size:13px; color:#64748b;">Toplam Portföy Değeri</div>
     <div style="font-size:26px; font-weight:800; margin:4px 0 16px;" id="totalPortfolioValue">0,00 ₺</div>
@@ -210,7 +169,6 @@
     <div id="portfolioListContainer"></div>
   </div>
 
-  <!-- 4. DİĞER -->
   <div id="view-diger" class="page-section">
     <div style="font-size:18px; font-weight:700; margin-bottom:16px;">Finansal Araçlar</div>
     <div class="tool-card" onclick="openAltinPrimScreen()">
@@ -225,7 +183,6 @@
     </div>
   </div>
 
-  <!-- 5. ALTIN.S1 ÖZEL EKRANI -->
   <div id="view-altin-prim" class="page-section">
     <div style="display:flex; align-items:center; gap:12px; margin-bottom:18px;">
       <button onclick="backToDiger()" style="background:#1e293b; border:none; color:#fff; font-size:14px; padding:6px 14px; border-radius:12px; cursor:pointer;">← Geri</button>
@@ -260,7 +217,6 @@
     </div>
   </div>
 
-  <!-- AYARLAR MODAL -->
   <div class="modal-overlay" id="settingsModal">
     <div class="modal-sheet">
       <div class="modal-header">
@@ -276,7 +232,6 @@
     </div>
   </div>
 
-  <!-- DETAY MODALI -->
   <div class="modal-overlay" id="detailModal">
     <div class="modal-sheet">
       <div class="modal-header">
@@ -310,7 +265,6 @@
     </div>
   </div>
 
-  <!-- PORTFÖYE EKLEME / DÜZENLEME MODAL -->
   <div class="modal-overlay" id="addPortfolioModal">
     <div class="modal-sheet">
       <div class="modal-header">
@@ -332,7 +286,6 @@
     </div>
   </div>
 
-  <!-- ALT TABBAR -->
   <div class="tabbar-container">
     <div class="tabbar">
       <button class="tab-item active" onclick="switchNav('anasayfa', this)">
@@ -363,7 +316,6 @@
     let globalNews = [];
     let backendPrimData = null;
 
-    // Favorileri temizle ve boşsa varsayılanları yükle
     let storedFavs = JSON.parse(localStorage.getItem('bist_favs')) || [];
     let favorites = [...new Set(storedFavs.map(f => String(f).trim().split(/\s+/)[0].toUpperCase()).filter(Boolean))];
     if (favorites.length === 0) {
@@ -391,61 +343,6 @@
       if (!s) return NaN;
       if (s.includes(',')) s = s.replace(/\./g, '').replace(',', '.');
       return parseFloat(s);
-    }
-
-    // FRONTEND GÜVENLİK AYIKLAYICISI (Eski backend kalsa bile "THYAO TURK HAVA YOLLARI"nı böler)
-    function normalizeStockItem(raw) {
-      let fullCode = String(raw.code || "").trim();
-      let rawName = String(raw.name || "").trim();
-      let rawPrice = String(raw.price || "0,00").trim();
-      let rawChange = String(raw.change || "%0,00").trim();
-
-      let cleanSymbol = fullCode;
-      let cleanName = rawName;
-
-      if (fullCode.includes(" ")) {
-        let parts = fullCode.split(/\s+/);
-        cleanSymbol = parts[0].toUpperCase();
-        cleanName = parts.slice(1).join(" ").toUpperCase();
-      }
-
-      let nName = parseTrNumber(rawName);
-      let nPrice = parseTrNumber(rawPrice);
-      let nChange = parseTrNumber(rawChange);
-
-      let finalPriceNum = nPrice;
-      let finalChangeStr = rawChange;
-
-      const nameLooksNumeric = !isNaN(nName) && /^[\d.,\s₺+-]+$/.test(rawName);
-      if (nameLooksNumeric && !isNaN(nPrice)) {
-        if (!rawChange.includes('%') && nName > 0) {
-          finalPriceNum = nPrice;
-          let diffPct = ((nPrice - nName) / nName) * 100;
-          let sign = diffPct > 0 ? '+' : '';
-          finalChangeStr = `${sign}%${diffPct.toFixed(2).replace('.', ',')}`;
-        }
-      }
-
-      if (!finalChangeStr.includes('%')) {
-        if (!isNaN(nChange) && Math.abs(nChange) < 30) {
-          let sign = nChange > 0 ? '+' : '';
-          finalChangeStr = `${sign}%${nChange.toFixed(2).replace('.', ',')}`;
-        } else {
-          finalChangeStr = "%0,00";
-        }
-      }
-
-      let formattedPrice = (!isNaN(finalPriceNum) && finalPriceNum > 0)
-        ? finalPriceNum.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-        : ((!isNaN(nName) && nName > 0) ? nName.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : rawPrice);
-
-      return {
-        code: cleanSymbol,
-        name: (!cleanName || /^[\d.,\s₺+-]+$/.test(cleanName)) ? cleanSymbol : cleanName,
-        price: formattedPrice,
-        change: finalChangeStr,
-        type: raw.type || 'bist'
-      };
     }
 
     function startLiveClock() {
@@ -509,7 +406,7 @@
       return 'flat';
     }
 
-    // ARAMA LİSTESİ: YILDIZ + ÜSTTE SEMBOL + ALTTA İSİM | SAĞDA FİYAT + ALTINDA RENKLİ YÜZDE
+    // ARAMA LİSTESİ ŞABLONU
     function handleFullSearch() {
       const q = document.getElementById('fsInput').value.trim().toUpperCase();
       const container = document.getElementById('fsResultList');
@@ -625,29 +522,20 @@
         const res = await fetch(API_ENDPOINT);
         const data = await res.json();
         if (data.marketData && data.marketData.length > 0) {
-          const seen = {};
-          globalData = [];
-          data.marketData.forEach(raw => {
-            const norm = normalizeStockItem(raw);
-            if (norm.code && !seen[norm.code]) {
-              seen[norm.code] = true;
-              globalData.push(norm);
-            }
-          });
+          globalData = data.marketData;
 
-          // ALTIN.S1 listede yoksa prim datasından ekle
-          if (data.altinPrim && !seen['ALTIN.S1']) {
-            globalData.push({
-              code: 'ALTIN.S1',
-              name: 'DARPHANE ALTIN SERTİFİKASI',
-              price: data.altinPrim.s1Price,
-              change: data.altinPrim.s1Change || '-%2,27',
-              type: 'maden'
-            });
+          if (data.altinPrim) {
+            backendPrimData = data.altinPrim;
+            // ALTIN.S1 ve GRAM ekle
+            if (!globalData.some(d => d.code === 'ALTIN.S1')) {
+              globalData.push({ code: 'ALTIN.S1', name: 'DARPHANE ALTIN SERTİFİKASI', price: data.altinPrim.s1Price, change: data.altinPrim.s1Change, type: 'maden' });
+            }
+            if (!globalData.some(d => d.code === 'GRAM')) {
+              globalData.push({ code: 'GRAM', name: 'GRAM ALTIN', price: data.altinPrim.spotGram, change: data.altinPrim.gramChange, type: 'maden' });
+            }
           }
 
           globalNews = data.news || [];
-          backendPrimData = data.altinPrim;
           isMarketOpenGlobal = data.status;
 
           renderTapeSlider();
@@ -915,6 +803,7 @@
 
     window.onload = () => {
       startLiveClock();
+      renderTapeSlider();
       refreshAllData();
     };
   </script>

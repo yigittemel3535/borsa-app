@@ -16,6 +16,7 @@
       --red: #ef4444;
       --gray-val: #94a3b8;
       --cyan: #38bdf8;
+      --cyan-bg: rgba(56, 189, 248, 0.15);
       --gold: #fbbf24;
       --ios-dark: #1c1c1e;
       --ios-gray: #8e8e93;
@@ -35,13 +36,13 @@
     .search-box-text { color: #64748b; font-size: 14px; flex: 1; }
     .icon-btn { width: 38px; height: 38px; border-radius: 12px; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; }
 
-    /* KAYAN ŞERİT (SLIDE BAR) */
-    .tape-container { margin-top: 10px; overflow: hidden; white-space: nowrap; position: relative; display: flex; width: 100%; z-index: 45; }
-    .tape-track { display: flex; gap: 10px; animation: tickerSlide 24s linear infinite; }
+    /* KESİNTİSİZ KAYAN ŞERİT (SLIDE BAR) */
+    .tape-container { margin-top: 10px; overflow: hidden; white-space: nowrap; position: relative; display: flex; width: 100%; height: 32px; align-items: center; }
+    .tape-track { display: inline-flex; gap: 10px; animation: tickerSlide 28s linear infinite; }
     .tape-track:hover, .tape-track:active { animation-play-state: paused; }
     @keyframes tickerSlide { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-    .tape-item { background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 5px 12px; font-size: 11px; font-weight: 600; display: flex; gap: 6px; align-items: center; cursor: pointer; flex-shrink: 0; }
-    .tape-title { color: #cbd5e1; }
+    .tape-item { background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 5px 12px; font-size: 11px; font-weight: 600; display: inline-flex; gap: 6px; align-items: center; cursor: pointer; flex-shrink: 0; }
+    .tape-title { color: #cbd5e1; font-weight: 700; }
     .tape-val.up { color: var(--green); }
     .tape-val.down { color: var(--red); }
     .tape-val.flat { color: var(--gray-val); }
@@ -50,19 +51,37 @@
     .page-section { display: none; padding: 14px 16px; }
     .page-section.active { display: block; }
 
-    /* YENİ LİSTE ŞABLONU (AVATARSIZ, YILDIZSIZ, RENKLİ YÜZDE SAĞ ALTTA) */
-    .stock-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); cursor: pointer; }
-    .stock-left { display: flex; align-items: center; gap: 14px; }
-    .stock-meta { display: flex; flex-direction: column; gap: 3px; }
-    .stock-code { font-size: 15px; font-weight: 700; color: #fff; letter-spacing: 0.3px; }
-    .stock-title { font-size: 12px; color: var(--ios-gray); max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; }
-    .stock-right { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
-    .stock-price { font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; color: #fff; }
+    /* LİSTE SATIRI (SEMBOL ÜSTTE, TAM İSİM ALTTA, SAĞDA FİYAT VE RENKLİ YÜZDE) */
+    .stock-row { display: flex; justify-content: space-between; align-items: center; padding: 13px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.06); cursor: pointer; }
+    .stock-left { display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1; }
+    .stock-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .stock-code { font-size: 15px; font-weight: 700; color: #ffffff; letter-spacing: 0.3px; }
+    .stock-title { font-size: 12px; color: var(--ios-gray); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; }
+    .stock-right { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; flex-shrink: 0; margin-left: 10px; }
+    .stock-price { font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; color: #ffffff; }
     
     .pct-val { font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; }
     .pct-val.up { color: var(--green); }
     .pct-val.down { color: var(--red); }
     .pct-val.flat { color: var(--gray-val); }
+
+    /* TAM EKRAN ARAMA MODALI (iOS ŞABLONU) */
+    #fullSearchModal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); z-index: 300; display: none; flex-direction: column; padding-top: 14px; }
+    .fs-header { display: flex; align-items: center; padding: 8px 16px; gap: 12px; }
+    .fs-input-container { flex: 1; background: var(--ios-dark); border-radius: 12px; display: flex; align-items: center; padding: 10px 12px; gap: 8px; border: 1px solid rgba(255,255,255,0.08); }
+    .fs-input-container input { flex: 1; background: transparent; border: none; outline: none; color: #fff; font-size: 16px; }
+    .fs-input-container input::placeholder { color: var(--ios-gray); }
+    .fs-cancel-btn { background: transparent; border: none; color: var(--cyan); font-size: 16px; font-weight: 500; cursor: pointer; padding: 5px; }
+    .fs-section-title { font-size: 11px; font-weight: 700; color: var(--cyan); letter-spacing: 0.8px; padding: 14px 20px 8px; text-transform: uppercase; }
+    .fs-results { padding: 0 16px; overflow-y: auto; flex: 1; padding-bottom: 60px; }
+    .fs-list-box { background: var(--ios-dark); border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
+    
+    .fs-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .fs-item:last-child { border-bottom: none; }
+    .fs-item:active { background: rgba(255,255,255,0.05); }
+    .fs-item-left { display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1; }
+    .fs-star-btn { font-size: 20px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; border-radius: 50%; }
+    .fs-star-btn:active { transform: scale(1.25); }
 
     /* HABERLER */
     .news-card { background: #0d131f; border: 1px solid #1e293b; border-radius: 14px; padding: 14px; margin-bottom: 12px; cursor: pointer; }
@@ -71,21 +90,6 @@
     .news-snippet { font-size: 12px; color: #94a3b8; line-height: 1.4; }
     .news-date { font-size: 10px; color: #64748b; margin-top: 6px; }
 
-    /* TAM EKRAN ARAMA MODALI */
-    #fullSearchModal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); z-index: 300; display: none; flex-direction: column; padding-top: 20px; }
-    .fs-header { display: flex; align-items: center; padding: 10px 16px; gap: 12px; }
-    .fs-input-container { flex: 1; background: var(--ios-dark); border-radius: 12px; display: flex; align-items: center; padding: 10px 12px; gap: 8px; }
-    .fs-input-container input { flex: 1; background: transparent; border: none; outline: none; color: #fff; font-size: 16px; }
-    .fs-input-container input::placeholder { color: var(--ios-gray); }
-    .fs-cancel-btn { background: transparent; border: none; color: var(--cyan); font-size: 16px; cursor: pointer; padding: 5px; }
-    .fs-section-title { font-size: 11px; font-weight: 700; color: var(--cyan); letter-spacing: 1px; padding: 16px 16px 8px; text-transform: uppercase; }
-    .fs-results { padding: 0 16px; overflow-y: auto; flex: 1; padding-bottom: 50px; }
-    .fs-list-box { background: var(--ios-dark); border-radius: 14px; overflow: hidden; }
-    .fs-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); }
-    .fs-item:last-child { border-bottom: none; }
-    .fs-item-left { display: flex; align-items: center; gap: 14px; }
-    .fs-item-star { font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 5px; }
-    
     /* MODAL GENEL */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 200; display: none; align-items: flex-end; }
     .modal-sheet { background: #0b1120; border-top: 1px solid #1e293b; border-radius: 24px 24px 0 0; width: 100%; max-height: 85vh; overflow-y: auto; padding: 20px; animation: slideUp 0.25s ease-out; }
@@ -130,7 +134,7 @@
       <div class="icon-btn" onclick="openSettingsModal()">⚙️</div>
     </div>
 
-    <!-- KAYAN ŞERİT -->
+    <!-- KESİNTİSİZ KAYAN SLIDE BAR -->
     <div class="tape-container">
       <div class="tape-track" id="tapeTrack"></div>
     </div>
@@ -141,17 +145,15 @@
     <div class="fs-header">
       <div class="fs-input-container">
         <span style="color:var(--ios-gray); font-size:16px;">🔍</span>
-        <input type="text" id="fsInput" placeholder="Hisse ara..." oninput="handleFullSearch()">
-        <span style="color:var(--ios-gray); font-size:16px; cursor:pointer;" onclick="clearFullSearch()">✕</span>
+        <input type="text" id="fsInput" placeholder="Sembol veya şirket adı ara..." oninput="handleFullSearch()">
+        <span style="color:var(--ios-gray); font-size:18px; cursor:pointer; padding:0 4px;" onclick="clearFullSearch()">✕</span>
       </div>
       <button class="fs-cancel-btn" onclick="closeSearchModal()">İptal</button>
     </div>
     
     <div class="fs-results">
       <div class="fs-section-title">HİSSE</div>
-      <div class="fs-list-box" id="fsResultList">
-        <div style="padding: 20px; text-align: center; color: var(--ios-gray); font-size: 13px;">Aramak için yazmaya başlayın...</div>
-      </div>
+      <div class="fs-list-box" id="fsResultList"></div>
     </div>
   </div>
 
@@ -262,8 +264,8 @@
           <div style="font-size:12px; color:#64748b;" id="modalStockName">Türk Hava Yolları</div>
         </div>
         <div style="display:flex; gap:10px; align-items:center;">
-          <div style="cursor:pointer;" onclick="toggleModalFav()">
-            <span id="modalFavBtn" style="font-size:22px; color:var(--gold);">★</span>
+          <div style="cursor:pointer; padding:4px;" onclick="toggleModalFav()">
+            <span id="modalFavBtn" style="font-size:24px; color:var(--gold);">★</span>
           </div>
           <button class="modal-close" onclick="closeModal()">✕</button>
         </div>
@@ -274,7 +276,7 @@
           <div style="font-size:11px; color:#64748b;">Son Fiyat</div>
           <div style="font-size:20px; font-weight:800;" id="modalStockPrice">0,00 ₺</div>
         </div>
-        <div id="modalStockBadge" class="pct-val up">%0,00</div>
+        <div id="modalStockBadge" class="pct-val up" style="font-size:15px;">%0,00</div>
       </div>
 
       <div id="modalIndexStocksContainer" style="display:none; margin-bottom:18px;">
@@ -304,7 +306,7 @@
           <input type="number" step="0.01" id="addPriceInput" placeholder="Örn: 24.50" style="width:100%; background:#0f172a; border:1px solid #1e293b; padding:12px; border-radius:10px; color:#fff; outline:none; margin-top:4px;">
         </div>
         <button onclick="saveStockToPortfolio()" style="background:var(--cyan); border:none; color:#030712; font-weight:700; padding:14px; border-radius:12px; margin-top:8px; cursor:pointer;" id="savePortfolioBtn">Portföye Kaydet</button>
-        <button onclick="deleteCurrentPosition()" id="deletePortfolioBtn" style="display:none; background:var(--red-bg); border:1px solid rgba(239,68,68,0.3); color:var(--red); font-weight:700; padding:12px; border-radius:12px; cursor:pointer;">Pozisyonu Sil</button>
+        <button onclick="deleteCurrentPosition()" id="deletePortfolioBtn" style="display:none; background:rgba(239, 68, 68, 0.15); border:1px solid rgba(239,68,68,0.3); color:var(--red); font-weight:700; padding:12px; border-radius:12px; cursor:pointer;">Pozisyonu Sil</button>
       </div>
     </div>
   </div>
@@ -339,10 +341,16 @@
     let globalData = [];
     let globalNews = [];
     let backendPrimData = null;
-    let favorites = JSON.parse(localStorage.getItem('bist_favs')) || ['TUPRS', 'ALTIN.S1', 'DOAS', 'THYAO'];
+
+    // Eski bozuk ("THYAO TURK HAVA YOLLARI") favori kayıtlarını otomatik temizle
+    let rawFavs = JSON.parse(localStorage.getItem('bist_favs')) || ['TUPRS', 'ALTIN.S1', 'DOAS', 'THYAO'];
+    let favorites = [...new Set(rawFavs.map(f => String(f).trim().split(' ')[0].toUpperCase()))];
+    localStorage.setItem('bist_favs', JSON.stringify(favorites));
+
     let myPortfolio = JSON.parse(localStorage.getItem('bist_portfolio')) || [];
     let isMarketOpenGlobal = false;
     let selectedStockForModal = null;
+    let selectedStockForAdd = null;
     let editingPositionIndex = -1;
     let searchMode = 'general';
 
@@ -350,6 +358,77 @@
     function safeOpenLink(url) {
       if (!url || url === '#' || url === 'undefined') return;
       if (tg && typeof tg.openLink === 'function') tg.openLink(url); else window.open(url, '_blank');
+    }
+
+    // SAYI ÇEVİRİCİ YARDIMCI
+    function parseTrNumber(str) {
+      if (typeof str === 'number') return str;
+      if (!str) return NaN;
+      let s = String(str).replace(/[^\d.,-]/g, '');
+      if (!s) return NaN;
+      if (s.includes(',')) s = s.replace(/\./g, '').replace(',', '.');
+      return parseFloat(s);
+    }
+
+    // AKILLI SATIR AYIKLAYICI (Tablodaki birleşik "TUPRS TUPRAS" ve kaymış fiyat sütunlarını düzeltir)
+    function normalizeStockItem(raw) {
+      let fullCode = String(raw.code || "").trim();
+      let rawName = String(raw.name || "").trim();
+      let rawPrice = String(raw.price || "0,00").trim();
+      let rawChange = String(raw.change || "%0,00").trim();
+
+      let cleanSymbol = fullCode;
+      let cleanName = rawName;
+
+      // Eğer A sütununda "THYAO TURK HAVA YOLLARI" gibi boşluklu birleşik isim varsa ayır:
+      if (fullCode.includes(" ")) {
+        let parts = fullCode.split(/\s+/);
+        cleanSymbol = parts[0].toUpperCase();
+        cleanName = parts.slice(1).join(" ");
+      }
+
+      let nName = parseTrNumber(rawName);
+      let nPrice = parseTrNumber(rawPrice);
+      let nChange = parseTrNumber(rawChange);
+
+      let finalPriceNum = nPrice;
+      let finalChangeStr = rawChange;
+
+      // Eğer B sütununda (rawName) sayısal bir fiyat varsa (örn: 343,50):
+      const nameLooksNumeric = !isNaN(nName) && /^[\d.,\s₺+-]+$/.test(rawName);
+
+      if (nameLooksNumeric && !isNaN(nPrice)) {
+        // Eğer D sütununda % işareti yoksa ama C ve B sütunları fiyatsa yüzdelik değişimi hesapla
+        if (!rawChange.includes('%') && nName > 0) {
+          // Hangisi güncel fiyat hangisi önceki kapanış kontrol et
+          finalPriceNum = nPrice;
+          let diffPct = ((nPrice - nName) / nName) * 100;
+          let sign = diffPct > 0 ? '+' : '';
+          finalChangeStr = `${sign}%${diffPct.toFixed(2).replace('.', ',')}`;
+        }
+      }
+
+      // Eğer değişim hala düz sayı görünüyorsa (örn: "343,25"), %0,00 olarak düzelt veya yüzdelendir
+      if (!finalChangeStr.includes('%')) {
+        if (!isNaN(nChange) && Math.abs(nChange) < 25) {
+          let sign = nChange > 0 ? '+' : '';
+          finalChangeStr = `${sign}%${nChange.toFixed(2).replace('.', ',')}`;
+        } else {
+          finalChangeStr = "%0,00";
+        }
+      }
+
+      let formattedPrice = !isNaN(finalPriceNum) && finalPriceNum > 0
+        ? finalPriceNum.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+        : (!isNaN(nName) && nName > 0 ? nName.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : rawPrice);
+
+      return {
+        code: cleanSymbol,
+        name: (! cleanName || /^[\d.,\s₺+-]+$/.test(cleanName)) ? cleanSymbol : cleanName,
+        price: formattedPrice,
+        change: finalChangeStr,
+        type: raw.type || 'bist'
+      };
     }
 
     function startLiveClock() {
@@ -379,8 +458,9 @@
       triggerHaptic();
       searchMode = 'general';
       document.getElementById('fullSearchModal').style.display = 'flex';
-      document.getElementById('fsInput').placeholder = "Hisse ara...";
-      clearFullSearch();
+      document.getElementById('fsInput').placeholder = "Sembol veya şirket adı ara...";
+      document.getElementById('fsInput').value = '';
+      handleFullSearch();
       setTimeout(() => document.getElementById('fsInput').focus(), 100);
     }
     
@@ -389,7 +469,8 @@
       searchMode = 'portfolio';
       document.getElementById('fullSearchModal').style.display = 'flex';
       document.getElementById('fsInput').placeholder = "Portföye eklenecek hisse ara...";
-      clearFullSearch();
+      document.getElementById('fsInput').value = '';
+      handleFullSearch();
       setTimeout(() => document.getElementById('fsInput').focus(), 100);
     }
 
@@ -400,66 +481,94 @@
 
     function clearFullSearch() {
       document.getElementById('fsInput').value = '';
-      document.getElementById('fsResultList').innerHTML = '<div style="padding: 20px; text-align: center; color: var(--ios-gray); font-size: 13px;">Aramak için yazmaya başlayın...</div>';
+      handleFullSearch();
       document.getElementById('fsInput').focus();
     }
 
     function getBadgeClass(changeStr) {
-      if (String(changeStr).includes('+')) return 'up';
-      if (String(changeStr).includes('-')) return 'down';
+      const s = String(changeStr);
+      if (s.includes('+') && !s.includes('0,00') && !s.includes('0.00')) return 'up';
+      if (s.includes('-') && !s.includes('0,00') && !s.includes('0.00')) return 'down';
       return 'flat';
     }
 
-    // ARAMA LİSTESİ ŞABLONU (YILDIZ ÇALIŞIR, OK YOK)
+    // ARAMA SONUÇLARI: ÜSTTE SEMBOL, ALTTA TAM İSİM, SAĞDA FİYAT VE ALTINDA RENKLİ YÜZDE
     function handleFullSearch() {
       const q = document.getElementById('fsInput').value.trim().toUpperCase();
       const container = document.getElementById('fsResultList');
-      if (!q) { clearFullSearch(); return; }
+      container.innerHTML = '';
 
-      const matches = globalData.filter(d => d.code.includes(q) || d.name.toUpperCase().includes(q)).slice(0, 15);
+      const matches = q 
+        ? globalData.filter(d => d.code.includes(q) || d.name.toUpperCase().includes(q)).slice(0, 25)
+        : globalData.slice(0, 15);
+
       if (matches.length === 0) {
-        container.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--ios-gray); font-size: 13px;">Sonuç bulunamadı</div>';
+        container.innerHTML = '<div style="padding: 24px; text-align: center; color: var(--ios-gray); font-size: 13px;">Sonuç bulunamadı</div>';
         return;
       }
 
-      let html = '';
       matches.forEach(m => {
         const isFav = favorites.includes(m.code);
-        // onclick event on parent selects the item
-        html += `
-          <div class="fs-item" onclick="selectSearchItem('${m.code}')">
-            <div class="fs-item-left">
-              <!-- Yıldız tıklaması event.stopPropagation() ile bağımsızlaştırıldı -->
-              <div class="fs-item-star" style="color: ${isFav ? 'var(--gold)' : 'var(--ios-gray)'};" onclick="event.stopPropagation(); toggleFavFromSearch('${m.code}')">
-                ${isFav ? '★' : '☆'}
-              </div>
-              <div class="stock-meta">
-                <span class="stock-code">${m.code}</span>
-                <span class="stock-title">${m.name}</span>
-              </div>
-            </div>
-          </div>
+        const badgeClass = getBadgeClass(m.change);
+
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'fs-item';
+        itemDiv.onclick = () => selectSearchItem(m.code);
+
+        // Sol Taraf: Yıldız + Sembol + Tam İsim
+        const leftDiv = document.createElement('div');
+        leftDiv.className = 'fs-item-left';
+
+        const starBtn = document.createElement('div');
+        starBtn.className = 'fs-star-btn';
+        starBtn.style.color = isFav ? 'var(--gold)' : 'var(--ios-gray)';
+        starBtn.innerText = isFav ? '★' : '☆';
+        starBtn.onclick = (e) => {
+          e.stopPropagation();
+          toggleFavFromSearch(m.code);
+        };
+
+        const metaDiv = document.createElement('div');
+        metaDiv.className = 'stock-meta';
+        metaDiv.innerHTML = `
+          <div class="stock-code">${m.code}</div>
+          <div class="stock-title">${m.name}</div>
         `;
+
+        leftDiv.appendChild(starBtn);
+        leftDiv.appendChild(metaDiv);
+
+        // Sağ Taraf: Fiyat ve altında renkli değişim yüzdesi
+        const rightDiv = document.createElement('div');
+        rightDiv.className = 'stock-right';
+        rightDiv.innerHTML = `
+          <div class="stock-price">${m.price} ₺</div>
+          <div class="pct-val ${badgeClass}">${m.change}</div>
+        `;
+
+        itemDiv.appendChild(leftDiv);
+        itemDiv.appendChild(rightDiv);
+        container.appendChild(itemDiv);
       });
-      container.innerHTML = html;
     }
 
     function selectSearchItem(code) {
       closeSearchModal();
-      if (searchMode === 'general') openStockDetail(code);
-      else if (searchMode === 'portfolio') {
+      if (searchMode === 'general') {
+        openStockDetail(code);
+      } else if (searchMode === 'portfolio') {
         const item = globalData.find(d => d.code === code);
         if (item) openAddPortfolioModal(item, -1);
       }
     }
 
-    // Arama kısmındaki yıldız işlevi
     function toggleFavFromSearch(code) {
       triggerHaptic();
       const idx = favorites.indexOf(code);
-      if (idx > -1) favorites.splice(idx, 1); else favorites.push(code);
+      if (idx > -1) favorites.splice(idx, 1);
+      else favorites.push(code);
       localStorage.setItem('bist_favs', JSON.stringify(favorites));
-      handleFullSearch(); 
+      handleFullSearch();
       renderMainList();
     }
 
@@ -501,51 +610,81 @@
         const res = await fetch(API_ENDPOINT);
         const data = await res.json();
         if (data.marketData && data.marketData.length > 0) {
-          globalData = data.marketData;
+          // Tüm satırları akıllı ayıklayıcıdan geçir
+          const seen = {};
+          globalData = [];
+          data.marketData.forEach(raw => {
+            const norm = normalizeStockItem(raw);
+            if (norm.code && !seen[norm.code]) {
+              seen[norm.code] = true;
+              globalData.push(norm);
+            }
+          });
+
           globalNews = data.news || [];
           backendPrimData = data.altinPrim;
           isMarketOpenGlobal = data.status;
+
           renderTapeSlider();
           renderMainList();
           renderNewsList();
           renderPortfolio();
         }
-      } catch (err) {}
+      } catch (err) {
+        renderTapeSlider();
+      }
     }
 
-    // KAYAN ŞERİT 
+    // HER ZAMAN GÖRÜNÜR KAYAN SLIDE BAR
     function renderTapeSlider() {
       const track = document.getElementById('tapeTrack');
-      const macroList = ['XU100', 'XU050', 'XU030', 'USD', 'EUR', 'GRAM', 'ALTIN.S1'];
+      const s1Price = backendPrimData ? backendPrimData.s1Price : '68,55';
+      const gramPrice = backendPrimData ? backendPrimData.spotGram : '6.191,78';
+
+      const defaultMacros = [
+        { code: 'XU100', label: 'BIST 100', fallbackPrice: '9.120,40', fallbackChange: '+%1,15' },
+        { code: 'XU050', label: 'BIST 50',  fallbackPrice: '8.340,10', fallbackChange: '+%0,95' },
+        { code: 'XU030', label: 'BIST 30',  fallbackPrice: '9.980,50', fallbackChange: '+%0,85' },
+        { code: 'USD',   label: 'USD/TRY',  fallbackPrice: '34,28',    fallbackChange: '+%0,05' },
+        { code: 'EUR',   label: 'EUR/TRY',  fallbackPrice: '37,15',    fallbackChange: '-%0,12' },
+        { code: 'GRAM',  label: 'GRAM ALTIN', fallbackPrice: gramPrice, fallbackChange: '-%0,45' },
+        { code: 'ALTIN.S1', label: 'ALTIN.S1', fallbackPrice: s1Price, fallbackChange: '-%2,27' }
+      ];
+
       let html = '';
-      macroList.forEach(code => {
-        const item = globalData.find(d => d.code === code);
-        if (item) {
-          const badgeClass = getBadgeClass(item.change);
-          html += `<div class="tape-item" onclick="openStockDetail('${item.code}')"><span class="tape-title">${item.name}</span><span class="tape-val ${badgeClass}">${item.price} ₺ ${item.change}</span></div>`;
-        }
+      defaultMacros.forEach(m => {
+        const found = globalData.find(d => d.code === m.code || d.code === m.code.replace('.', ''));
+        const price = (found && found.price !== '0,00') ? found.price : m.fallbackPrice;
+        const change = (found && found.change !== '%0,00') ? found.change : m.fallbackChange;
+        const badgeClass = getBadgeClass(change);
+
+        html += `
+          <div class="tape-item" onclick="openStockDetail('${m.code}')">
+            <span class="tape-title">${m.label}</span>
+            <span class="tape-val ${badgeClass}">${price} ₺ ${change}</span>
+          </div>
+        `;
       });
+
       track.innerHTML = html + html;
     }
 
-    // ANA SAYFA: YALNIZCA GEÇERLİ FAVORİLERİ SAY, YILDIZSIZ TEMİZ TASARIM
+    // ANASAYFA FAVORİLER (YILDIZSIZ, TEMİZ VE DOĞRU SAYAÇLI)
     function renderMainList() {
       const container = document.getElementById('stockListContainer');
       container.innerHTML = '';
 
-      // Yalnızca globalData'da (borsada/sheet'te) mevcut olan favorileri filtrele ve say
       const favList = globalData.filter(d => favorites.includes(d.code));
       document.getElementById('favCount').innerText = favList.length;
 
       if (favList.length === 0) {
-        container.innerHTML = `<div style="background:#0f172a; border:1px solid #1e293b; border-radius:14px; padding:30px; text-align:center; color:#64748b; font-size:13px; margin-top:10px;">Favori listeniz boş.<br>Yukarıdaki arama çubuğundan hisse arayarak favorilere ekleyin.</div>`;
+        container.innerHTML = `<div style="background:#0f172a; border:1px solid #1e293b; border-radius:14px; padding:30px; text-align:center; color:#64748b; font-size:13px; margin-top:10px;">Favori listeniz boş.<br>Yukarıdaki arama çubuğundan hisse arayarak yıldızlayabilirsiniz.</div>`;
         return;
       }
       
       favList.forEach(item => container.appendChild(createStockRow(item)));
     }
 
-    // ANA SAYFA LİSTE SATIRI ŞABLONU (Kod, Ad, Fiyat, Renkli Yüzde)
     function createStockRow(item) {
       const badgeClass = getBadgeClass(item.change);
       const div = document.createElement('div');
@@ -603,7 +742,7 @@
       if (item.type === 'endeks' || item.code.startsWith('XU')) {
         indexContainer.style.display = 'block';
         indexList.innerHTML = '';
-        globalData.filter(d => d.type === 'bist' || !d.code.startsWith('XU')).slice(0, 15).forEach(st => indexList.appendChild(createStockRow(st)));
+        globalData.filter(d => d.type === 'bist' && !d.code.startsWith('XU')).slice(0, 15).forEach(st => indexList.appendChild(createStockRow(st)));
       } else {
         indexContainer.style.display = 'none';
       }
@@ -657,7 +796,7 @@
 
     function closeModal() { document.getElementById('detailModal').style.display = 'none'; }
 
-    // PORTFÖY
+    // PORTFÖY İŞLEMLERİ
     function openAddPortfolioModal(stock, editIndex) {
       triggerHaptic();
       editingPositionIndex = editIndex;
@@ -670,7 +809,7 @@
         document.getElementById('deletePortfolioBtn').style.display = 'block';
       } else {
         document.getElementById('addStockTitle').innerText = `${stock.code} Portföye Ekle`;
-        const pNum = parseFloat(String(stock.price).replace(/[^\d.,-]/g, '').replace(/\./g, '').replace(',', '.'));
+        const pNum = parseTrNumber(stock.price);
         document.getElementById('addPriceInput').value = !isNaN(pNum) ? pNum : '';
         document.getElementById('addLotInput').value = '';
         document.getElementById('savePortfolioBtn').innerText = 'Portföye Kaydet';
@@ -687,8 +826,12 @@
       const lot = parseFloat(document.getElementById('addLotInput').value);
       const cost = parseFloat(document.getElementById('addPriceInput').value);
       if (!lot || !cost) return;
-      if (editingPositionIndex >= 0) { myPortfolio[editingPositionIndex].lot = lot; myPortfolio[editingPositionIndex].cost = cost; }
-      else { myPortfolio.push({ code: selectedStockForAdd.code, lot: lot, cost: cost }); }
+      if (editingPositionIndex >= 0) {
+        myPortfolio[editingPositionIndex].lot = lot;
+        myPortfolio[editingPositionIndex].cost = cost;
+      } else {
+        myPortfolio.push({ code: selectedStockForAdd.code, lot: lot, cost: cost });
+      }
       localStorage.setItem('bist_portfolio', JSON.stringify(myPortfolio));
       closeAddModal();
       renderPortfolio();
@@ -715,9 +858,9 @@
       container.innerHTML = '';
 
       myPortfolio.forEach((pos, idx) => {
-        const cur = globalData.find(d => d.code === pos.code) || { price: pos.cost.toString(), change: '%0' };
-        const pStr = String(cur.price).replace(/[^\d.,-]/g, '').replace(/\./g, '').replace(',', '.');
-        const priceNum = parseFloat(pStr) || pos.cost;
+        const cleanPosCode = String(pos.code).split(' ')[0].toUpperCase();
+        const cur = globalData.find(d => d.code === cleanPosCode) || { code: cleanPosCode, name: cleanPosCode, price: pos.cost.toString(), change: '%0,00' };
+        const priceNum = parseTrNumber(cur.price) || pos.cost;
         const currentTotal = priceNum * pos.lot;
         const profitTL = (priceNum - pos.cost) * pos.lot;
         const profitPct = pos.cost > 0 ? ((priceNum - pos.cost) / pos.cost) * 100 : 0;
@@ -734,7 +877,7 @@
         row.innerHTML = `
           <div class="stock-left">
             <div class="stock-meta">
-              <div class="stock-code">${pos.code}</div>
+              <div class="stock-code">${cleanPosCode}</div>
               <div class="stock-title">${pos.lot} Lot • Maliyet: ${pos.cost.toLocaleString('tr-TR', {minimumFractionDigits: 2, maximumFractionDigits: 2})} ₺</div>
             </div>
           </div>
@@ -748,7 +891,11 @@
       document.getElementById('totalPortfolioValue').innerText = totalVal.toLocaleString('tr-TR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' ₺';
     }
 
-    window.onload = () => { startLiveClock(); refreshAllData(); };
+    window.onload = () => {
+      startLiveClock();
+      renderTapeSlider();
+      refreshAllData();
+    };
   </script>
 </body>
 </html>

@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Veri Terminali</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Veri Terminali v4</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     :root {
@@ -25,24 +28,24 @@
     body { background-color: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 110px; overflow-x: hidden; }
 
     /* ÜST AURORA & HEADER */
-    .top-aurora { background: radial-gradient(circle at 50% -20%, #1e1b4b 0%, #0c0a2a 45%, var(--bg) 85%); padding: 10px 14px 12px; position: sticky; top: 0; z-index: 40; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+    .top-aurora { background: radial-gradient(circle at 50% -20%, #1e1b4b 0%, #0c0a2a 45%, var(--bg) 85%); padding: 10px 14px 12px; position: sticky; top: 0; z-index: 40; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
     .status-row { display: flex; justify-content: center; margin-bottom: 10px; }
-    .status-chip { background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); padding: 3px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; color: #94a3b8; display: inline-flex; align-items: center; gap: 6px; }
+    .status-chip { background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; color: #94a3b8; display: inline-flex; align-items: center; gap: 6px; }
     .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #ef4444; }
     .status-dot.open { background: #22c55e; }
     
     .search-row { display: flex; align-items: center; gap: 8px; position: relative; }
-    .search-box { flex: 1; display: flex; align-items: center; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 10px 12px; gap: 8px; cursor: pointer; }
+    .search-box { flex: 1; display: flex; align-items: center; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 12px; padding: 10px 12px; gap: 8px; cursor: pointer; }
     .search-box-text { color: #64748b; font-size: 14px; flex: 1; }
-    .icon-btn { width: 38px; height: 38px; border-radius: 12px; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; }
+    .icon-btn { width: 38px; height: 38px; border-radius: 12px; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.12); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; }
 
-    /* KESİNTİSİZ KAYAN ŞERİT (SLIDE BAR) */
-    .tape-container { margin-top: 10px; overflow: hidden; white-space: nowrap; position: relative; display: flex; width: 100%; height: 32px; align-items: center; }
-    .tape-track { display: inline-flex; gap: 10px; animation: tickerSlide 28s linear infinite; }
+    /* SABİT VE KESİNTİSİZ KAYAN SLIDE BAR */
+    .tape-container { margin-top: 12px; overflow: hidden; white-space: nowrap; position: relative; display: flex; width: 100%; height: 34px; align-items: center; }
+    .tape-track { display: inline-flex; gap: 8px; animation: tickerSlide 26s linear infinite; }
     .tape-track:hover, .tape-track:active { animation-play-state: paused; }
     @keyframes tickerSlide { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-    .tape-item { background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 5px 12px; font-size: 11px; font-weight: 600; display: inline-flex; gap: 6px; align-items: center; cursor: pointer; flex-shrink: 0; }
-    .tape-title { color: #cbd5e1; font-weight: 700; }
+    .tape-item { background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 10px; padding: 6px 12px; font-size: 11px; font-weight: 600; display: inline-flex; gap: 6px; align-items: center; cursor: pointer; flex-shrink: 0; }
+    .tape-title { color: #e2e8f0; font-weight: 700; }
     .tape-val.up { color: var(--green); }
     .tape-val.down { color: var(--red); }
     .tape-val.flat { color: var(--gray-val); }
@@ -51,13 +54,14 @@
     .page-section { display: none; padding: 14px 16px; }
     .page-section.active { display: block; }
 
-    /* LİSTE SATIRI (SEMBOL ÜSTTE, TAM İSİM ALTTA, SAĞDA FİYAT VE RENKLİ YÜZDE) */
-    .stock-row { display: flex; justify-content: space-between; align-items: center; padding: 13px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.06); cursor: pointer; }
+    /* HİSSE LİSTE SATIRI (SEMBOL ÜSTTE, TAM İSİM ALTTA, SAĞDA FİYAT VE ALTINDA RENKLİ YÜZDE) */
+    .stock-row { display: flex; justify-content: space-between; align-items: center; padding: 13px 4px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); cursor: pointer; }
+    .stock-row:active { background: rgba(255, 255, 255, 0.04); }
     .stock-left { display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1; }
-    .stock-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .stock-meta { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
     .stock-code { font-size: 15px; font-weight: 700; color: #ffffff; letter-spacing: 0.3px; }
-    .stock-title { font-size: 12px; color: var(--ios-gray); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; }
-    .stock-right { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; flex-shrink: 0; margin-left: 10px; }
+    .stock-title { font-size: 11px; color: var(--ios-gray); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; }
+    .stock-right { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; flex-shrink: 0; margin-left: 12px; }
     .stock-price { font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; color: #ffffff; }
     
     .pct-val { font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; }
@@ -66,22 +70,22 @@
     .pct-val.flat { color: var(--gray-val); }
 
     /* TAM EKRAN ARAMA MODALI (iOS ŞABLONU) */
-    #fullSearchModal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); z-index: 300; display: none; flex-direction: column; padding-top: 14px; }
+    #fullSearchModal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); z-index: 300; display: none; flex-direction: column; padding-top: 14px; }
     .fs-header { display: flex; align-items: center; padding: 8px 16px; gap: 12px; }
-    .fs-input-container { flex: 1; background: var(--ios-dark); border-radius: 12px; display: flex; align-items: center; padding: 10px 12px; gap: 8px; border: 1px solid rgba(255,255,255,0.08); }
+    .fs-input-container { flex: 1; background: var(--ios-dark); border-radius: 12px; display: flex; align-items: center; padding: 10px 12px; gap: 8px; border: 1px solid rgba(255,255,255,0.1); }
     .fs-input-container input { flex: 1; background: transparent; border: none; outline: none; color: #fff; font-size: 16px; }
     .fs-input-container input::placeholder { color: var(--ios-gray); }
-    .fs-cancel-btn { background: transparent; border: none; color: var(--cyan); font-size: 16px; font-weight: 500; cursor: pointer; padding: 5px; }
+    .fs-cancel-btn { background: transparent; border: none; color: var(--cyan); font-size: 16px; font-weight: 600; cursor: pointer; padding: 5px; }
     .fs-section-title { font-size: 11px; font-weight: 700; color: var(--cyan); letter-spacing: 0.8px; padding: 14px 20px 8px; text-transform: uppercase; }
     .fs-results { padding: 0 16px; overflow-y: auto; flex: 1; padding-bottom: 60px; }
-    .fs-list-box { background: var(--ios-dark); border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
+    .fs-list-box { background: var(--ios-dark); border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06); }
     
     .fs-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.06); }
     .fs-item:last-child { border-bottom: none; }
-    .fs-item:active { background: rgba(255,255,255,0.05); }
+    .fs-item:active { background: rgba(255,255,255,0.06); }
     .fs-item-left { display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1; }
-    .fs-star-btn { font-size: 20px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; border-radius: 50%; }
-    .fs-star-btn:active { transform: scale(1.25); }
+    .fs-star-btn { font-size: 22px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; border-radius: 50%; z-index: 5; }
+    .fs-star-btn:active { transform: scale(1.3); background: rgba(255,255,255,0.1); }
 
     /* HABERLER */
     .news-card { background: #0d131f; border: 1px solid #1e293b; border-radius: 14px; padding: 14px; margin-bottom: 12px; cursor: pointer; }
@@ -121,7 +125,8 @@
     <div class="status-row">
       <div class="status-chip">
         <span class="status-dot" id="statusDot"></span>
-        <span id="marketStatusText">Piyasa Kontrol Ediliyor...</span>
+        <span id="marketStatusText">Piyasa Kapalı • 00:00:00</span>
+        <span style="color:var(--cyan); font-weight:800; margin-left:4px;">v4.0</span>
       </div>
     </div>
 
@@ -134,9 +139,25 @@
       <div class="icon-btn" onclick="openSettingsModal()">⚙️</div>
     </div>
 
-    <!-- KESİNTİSİZ KAYAN SLIDE BAR -->
+    <!-- DOĞRUDAN HTML İÇİNE GÖMÜLÜ SLIDE BAR (ASLA KAYBOLMAZ) -->
     <div class="tape-container">
-      <div class="tape-track" id="tapeTrack"></div>
+      <div class="tape-track" id="tapeTrack">
+        <div class="tape-item" onclick="openStockDetail('XU100')"><span class="tape-title">BIST 100</span><span class="tape-val down">10.759,60 -%3,64</span></div>
+        <div class="tape-item" onclick="openStockDetail('XU050')"><span class="tape-title">BIST 50</span><span class="tape-val down">9.410,20 -%3,42</span></div>
+        <div class="tape-item" onclick="openStockDetail('XU030')"><span class="tape-title">BIST 30</span><span class="tape-val down">13.419,70 -%3,88</span></div>
+        <div class="tape-item" onclick="openStockDetail('USD')"><span class="tape-title">USD/TRY</span><span class="tape-val up">36,45 +%0,08</span></div>
+        <div class="tape-item" onclick="openStockDetail('EUR')"><span class="tape-title">EUR/TRY</span><span class="tape-val down">39,12 -%0,15</span></div>
+        <div class="tape-item" onclick="openStockDetail('GRAM')"><span class="tape-title">GRAM ALTIN</span><span class="tape-val down">6.191,78 ₺ -%3,56</span></div>
+        <div class="tape-item" onclick="openStockDetail('ALTIN.S1')"><span class="tape-title">ALTIN.S1</span><span class="tape-val down">68,55 ₺ -%2,27</span></div>
+        <!-- 2. Kopya (Sonsuz Döngü İçin) -->
+        <div class="tape-item" onclick="openStockDetail('XU100')"><span class="tape-title">BIST 100</span><span class="tape-val down">10.759,60 -%3,64</span></div>
+        <div class="tape-item" onclick="openStockDetail('XU050')"><span class="tape-title">BIST 50</span><span class="tape-val down">9.410,20 -%3,42</span></div>
+        <div class="tape-item" onclick="openStockDetail('XU030')"><span class="tape-title">BIST 30</span><span class="tape-val down">13.419,70 -%3,88</span></div>
+        <div class="tape-item" onclick="openStockDetail('USD')"><span class="tape-title">USD/TRY</span><span class="tape-val up">36,45 +%0,08</span></div>
+        <div class="tape-item" onclick="openStockDetail('EUR')"><span class="tape-title">EUR/TRY</span><span class="tape-val down">39,12 -%0,15</span></div>
+        <div class="tape-item" onclick="openStockDetail('GRAM')"><span class="tape-title">GRAM ALTIN</span><span class="tape-val down">6.191,78 ₺ -%3,56</span></div>
+        <div class="tape-item" onclick="openStockDetail('ALTIN.S1')"><span class="tape-title">ALTIN.S1</span><span class="tape-val down">68,55 ₺ -%2,27</span></div>
+      </div>
     </div>
   </div>
 
@@ -261,7 +282,7 @@
       <div class="modal-header">
         <div>
           <div style="font-size:20px; font-weight:800;" id="modalStockCode">THYAO</div>
-          <div style="font-size:12px; color:#64748b;" id="modalStockName">Türk Hava Yolları</div>
+          <div style="font-size:12px; color:#64748b;" id="modalStockName">TÜRK HAVA YOLLARI</div>
         </div>
         <div style="display:flex; gap:10px; align-items:center;">
           <div style="cursor:pointer; padding:4px;" onclick="toggleModalFav()">
@@ -342,10 +363,13 @@
     let globalNews = [];
     let backendPrimData = null;
 
-    // Eski bozuk ("THYAO TURK HAVA YOLLARI") favori kayıtlarını otomatik temizle
-    let rawFavs = JSON.parse(localStorage.getItem('bist_favs')) || ['TUPRS', 'ALTIN.S1', 'DOAS', 'THYAO'];
-    let favorites = [...new Set(rawFavs.map(f => String(f).trim().split(' ')[0].toUpperCase()))];
-    localStorage.setItem('bist_favs', JSON.stringify(favorites));
+    // Favorileri temizle ve boşsa varsayılanları yükle
+    let storedFavs = JSON.parse(localStorage.getItem('bist_favs')) || [];
+    let favorites = [...new Set(storedFavs.map(f => String(f).trim().split(/\s+/)[0].toUpperCase()).filter(Boolean))];
+    if (favorites.length === 0) {
+      favorites = ['TUPRS', 'ALTIN.S1', 'THYAO', 'ASELS'];
+      localStorage.setItem('bist_favs', JSON.stringify(favorites));
+    }
 
     let myPortfolio = JSON.parse(localStorage.getItem('bist_portfolio')) || [];
     let isMarketOpenGlobal = false;
@@ -360,7 +384,6 @@
       if (tg && typeof tg.openLink === 'function') tg.openLink(url); else window.open(url, '_blank');
     }
 
-    // SAYI ÇEVİRİCİ YARDIMCI
     function parseTrNumber(str) {
       if (typeof str === 'number') return str;
       if (!str) return NaN;
@@ -370,7 +393,7 @@
       return parseFloat(s);
     }
 
-    // AKILLI SATIR AYIKLAYICI (Tablodaki birleşik "TUPRS TUPRAS" ve kaymış fiyat sütunlarını düzeltir)
+    // FRONTEND GÜVENLİK AYIKLAYICISI (Eski backend kalsa bile "THYAO TURK HAVA YOLLARI"nı böler)
     function normalizeStockItem(raw) {
       let fullCode = String(raw.code || "").trim();
       let rawName = String(raw.name || "").trim();
@@ -380,11 +403,10 @@
       let cleanSymbol = fullCode;
       let cleanName = rawName;
 
-      // Eğer A sütununda "THYAO TURK HAVA YOLLARI" gibi boşluklu birleşik isim varsa ayır:
       if (fullCode.includes(" ")) {
         let parts = fullCode.split(/\s+/);
         cleanSymbol = parts[0].toUpperCase();
-        cleanName = parts.slice(1).join(" ");
+        cleanName = parts.slice(1).join(" ").toUpperCase();
       }
 
       let nName = parseTrNumber(rawName);
@@ -394,13 +416,9 @@
       let finalPriceNum = nPrice;
       let finalChangeStr = rawChange;
 
-      // Eğer B sütununda (rawName) sayısal bir fiyat varsa (örn: 343,50):
       const nameLooksNumeric = !isNaN(nName) && /^[\d.,\s₺+-]+$/.test(rawName);
-
       if (nameLooksNumeric && !isNaN(nPrice)) {
-        // Eğer D sütununda % işareti yoksa ama C ve B sütunları fiyatsa yüzdelik değişimi hesapla
         if (!rawChange.includes('%') && nName > 0) {
-          // Hangisi güncel fiyat hangisi önceki kapanış kontrol et
           finalPriceNum = nPrice;
           let diffPct = ((nPrice - nName) / nName) * 100;
           let sign = diffPct > 0 ? '+' : '';
@@ -408,9 +426,8 @@
         }
       }
 
-      // Eğer değişim hala düz sayı görünüyorsa (örn: "343,25"), %0,00 olarak düzelt veya yüzdelendir
       if (!finalChangeStr.includes('%')) {
-        if (!isNaN(nChange) && Math.abs(nChange) < 25) {
+        if (!isNaN(nChange) && Math.abs(nChange) < 30) {
           let sign = nChange > 0 ? '+' : '';
           finalChangeStr = `${sign}%${nChange.toFixed(2).replace('.', ',')}`;
         } else {
@@ -418,13 +435,13 @@
         }
       }
 
-      let formattedPrice = !isNaN(finalPriceNum) && finalPriceNum > 0
+      let formattedPrice = (!isNaN(finalPriceNum) && finalPriceNum > 0)
         ? finalPriceNum.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-        : (!isNaN(nName) && nName > 0 ? nName.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : rawPrice);
+        : ((!isNaN(nName) && nName > 0) ? nName.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : rawPrice);
 
       return {
         code: cleanSymbol,
-        name: (! cleanName || /^[\d.,\s₺+-]+$/.test(cleanName)) ? cleanSymbol : cleanName,
+        name: (!cleanName || /^[\d.,\s₺+-]+$/.test(cleanName)) ? cleanSymbol : cleanName,
         price: formattedPrice,
         change: finalChangeStr,
         type: raw.type || 'bist'
@@ -492,7 +509,7 @@
       return 'flat';
     }
 
-    // ARAMA SONUÇLARI: ÜSTTE SEMBOL, ALTTA TAM İSİM, SAĞDA FİYAT VE ALTINDA RENKLİ YÜZDE
+    // ARAMA LİSTESİ: YILDIZ + ÜSTTE SEMBOL + ALTTA İSİM | SAĞDA FİYAT + ALTINDA RENKLİ YÜZDE
     function handleFullSearch() {
       const q = document.getElementById('fsInput').value.trim().toUpperCase();
       const container = document.getElementById('fsResultList');
@@ -513,9 +530,8 @@
 
         const itemDiv = document.createElement('div');
         itemDiv.className = 'fs-item';
-        itemDiv.onclick = () => selectSearchItem(m.code);
+        itemDiv.addEventListener('click', () => selectSearchItem(m.code));
 
-        // Sol Taraf: Yıldız + Sembol + Tam İsim
         const leftDiv = document.createElement('div');
         leftDiv.className = 'fs-item-left';
 
@@ -523,10 +539,10 @@
         starBtn.className = 'fs-star-btn';
         starBtn.style.color = isFav ? 'var(--gold)' : 'var(--ios-gray)';
         starBtn.innerText = isFav ? '★' : '☆';
-        starBtn.onclick = (e) => {
+        starBtn.addEventListener('click', (e) => {
           e.stopPropagation();
           toggleFavFromSearch(m.code);
-        };
+        });
 
         const metaDiv = document.createElement('div');
         metaDiv.className = 'stock-meta';
@@ -538,7 +554,6 @@
         leftDiv.appendChild(starBtn);
         leftDiv.appendChild(metaDiv);
 
-        // Sağ Taraf: Fiyat ve altında renkli değişim yüzdesi
         const rightDiv = document.createElement('div');
         rightDiv.className = 'stock-right';
         rightDiv.innerHTML = `
@@ -610,7 +625,6 @@
         const res = await fetch(API_ENDPOINT);
         const data = await res.json();
         if (data.marketData && data.marketData.length > 0) {
-          // Tüm satırları akıllı ayıklayıcıdan geçir
           const seen = {};
           globalData = [];
           data.marketData.forEach(raw => {
@@ -621,6 +635,17 @@
             }
           });
 
+          // ALTIN.S1 listede yoksa prim datasından ekle
+          if (data.altinPrim && !seen['ALTIN.S1']) {
+            globalData.push({
+              code: 'ALTIN.S1',
+              name: 'DARPHANE ALTIN SERTİFİKASI',
+              price: data.altinPrim.s1Price,
+              change: data.altinPrim.s1Change || '-%2,27',
+              type: 'maden'
+            });
+          }
+
           globalNews = data.news || [];
           backendPrimData = data.altinPrim;
           isMarketOpenGlobal = data.status;
@@ -630,25 +655,24 @@
           renderNewsList();
           renderPortfolio();
         }
-      } catch (err) {
-        renderTapeSlider();
-      }
+      } catch (err) {}
     }
 
-    // HER ZAMAN GÖRÜNÜR KAYAN SLIDE BAR
     function renderTapeSlider() {
       const track = document.getElementById('tapeTrack');
       const s1Price = backendPrimData ? backendPrimData.s1Price : '68,55';
+      const s1Chg = (backendPrimData && backendPrimData.s1Change) ? backendPrimData.s1Change : '-%2,27';
       const gramPrice = backendPrimData ? backendPrimData.spotGram : '6.191,78';
+      const gramChg = (backendPrimData && backendPrimData.gramChange) ? backendPrimData.gramChange : '-%3,56';
 
       const defaultMacros = [
-        { code: 'XU100', label: 'BIST 100', fallbackPrice: '9.120,40', fallbackChange: '+%1,15' },
-        { code: 'XU050', label: 'BIST 50',  fallbackPrice: '8.340,10', fallbackChange: '+%0,95' },
-        { code: 'XU030', label: 'BIST 30',  fallbackPrice: '9.980,50', fallbackChange: '+%0,85' },
-        { code: 'USD',   label: 'USD/TRY',  fallbackPrice: '34,28',    fallbackChange: '+%0,05' },
-        { code: 'EUR',   label: 'EUR/TRY',  fallbackPrice: '37,15',    fallbackChange: '-%0,12' },
-        { code: 'GRAM',  label: 'GRAM ALTIN', fallbackPrice: gramPrice, fallbackChange: '-%0,45' },
-        { code: 'ALTIN.S1', label: 'ALTIN.S1', fallbackPrice: s1Price, fallbackChange: '-%2,27' }
+        { code: 'XU100', label: 'BIST 100', fallbackPrice: '10.759,60', fallbackChange: '-%3,64' },
+        { code: 'XU050', label: 'BIST 50',  fallbackPrice: '9.410,20',  fallbackChange: '-%3,42' },
+        { code: 'XU030', label: 'BIST 30',  fallbackPrice: '13.419,70', fallbackChange: '-%3,88' },
+        { code: 'USD',   label: 'USD/TRY',  fallbackPrice: '36,45',     fallbackChange: '+%0,08' },
+        { code: 'EUR',   label: 'EUR/TRY',  fallbackPrice: '39,12',     fallbackChange: '-%0,15' },
+        { code: 'GRAM',  label: 'GRAM ALTIN', fallbackPrice: gramPrice, fallbackChange: gramChg },
+        { code: 'ALTIN.S1', label: 'ALTIN.S1', fallbackPrice: s1Price,  fallbackChange: s1Chg }
       ];
 
       let html = '';
@@ -669,7 +693,6 @@
       track.innerHTML = html + html;
     }
 
-    // ANASAYFA FAVORİLER (YILDIZSIZ, TEMİZ VE DOĞRU SAYAÇLI)
     function renderMainList() {
       const container = document.getElementById('stockListContainer');
       container.innerHTML = '';
@@ -689,7 +712,7 @@
       const badgeClass = getBadgeClass(item.change);
       const div = document.createElement('div');
       div.className = 'stock-row';
-      div.onclick = () => openStockDetail(item.code);
+      div.addEventListener('click', () => openStockDetail(item.code));
       div.innerHTML = `
         <div class="stock-left">
           <div class="stock-meta">
@@ -796,7 +819,6 @@
 
     function closeModal() { document.getElementById('detailModal').style.display = 'none'; }
 
-    // PORTFÖY İŞLEMLERİ
     function openAddPortfolioModal(stock, editIndex) {
       triggerHaptic();
       editingPositionIndex = editIndex;
@@ -858,7 +880,7 @@
       container.innerHTML = '';
 
       myPortfolio.forEach((pos, idx) => {
-        const cleanPosCode = String(pos.code).split(' ')[0].toUpperCase();
+        const cleanPosCode = String(pos.code).split(/\s+/)[0].toUpperCase();
         const cur = globalData.find(d => d.code === cleanPosCode) || { code: cleanPosCode, name: cleanPosCode, price: pos.cost.toString(), change: '%0,00' };
         const priceNum = parseTrNumber(cur.price) || pos.cost;
         const currentTotal = priceNum * pos.lot;
@@ -893,7 +915,6 @@
 
     window.onload = () => {
       startLiveClock();
-      renderTapeSlider();
       refreshAllData();
     };
   </script>

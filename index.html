@@ -40,7 +40,6 @@
       overflow-x: hidden;
     }
 
-    /* ÜST AURORA */
     .top-aurora {
       background: radial-gradient(circle at 50% -20%, #1e1b4b 0%, #0c0a2a 45%, var(--bg) 85%);
       padding: 10px 14px 12px;
@@ -102,7 +101,6 @@
       font-size: 16px;
     }
 
-    /* KESİNTİSİZ OTOMATİK AKAN SLIDER (TICKER TAPE) */
     .tape-container {
       margin-top: 10px;
       overflow: hidden;
@@ -141,11 +139,9 @@
     .tape-val.up { color: var(--green); }
     .tape-val.down { color: var(--red); }
 
-    /* SAYFALAR */
     .page-section { display: none; padding: 14px 16px; }
     .page-section.active { display: block; }
 
-    /* HİSSE LİSTESİ */
     .stock-row {
       display: flex;
       justify-content: space-between;
@@ -184,7 +180,6 @@
     .stock-badge.up { background: var(--green-bg); color: var(--green); }
     .stock-badge.down { background: var(--red-bg); color: var(--red); }
 
-    /* HABERLER */
     .news-card {
       background: #0d131f;
       border: 1px solid #1e293b;
@@ -207,7 +202,6 @@
     .news-snippet { font-size: 12px; color: #94a3b8; line-height: 1.4; }
     .news-date { font-size: 10px; color: #64748b; margin-top: 6px; }
 
-    /* AUTOCOMPLETE POPUP */
     .autocomplete-list {
       position: absolute;
       top: 50px;
@@ -230,7 +224,6 @@
       cursor: pointer;
     }
 
-    /* MODAL */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -271,7 +264,6 @@
       cursor: pointer;
     }
 
-    /* DİĞER MENÜSÜ & KARTLAR */
     .tool-card {
       background: #0f172a;
       border: 1px solid #1e293b;
@@ -304,7 +296,6 @@
       margin-bottom: 12px;
     }
 
-    /* YÜKLEME SPINNER */
     .spinner {
       width: 32px;
       height: 32px;
@@ -318,7 +309,6 @@
       to { transform: rotate(360deg); }
     }
 
-    /* FLOATING TABBAR */
     .tabbar-container {
       position: fixed;
       bottom: 20px;
@@ -361,7 +351,6 @@
 </head>
 <body>
 
-  <!-- AURORA HEADER -->
   <div class="top-aurora">
     <div class="status-row">
       <div class="status-chip">
@@ -381,7 +370,6 @@
       <div class="autocomplete-list" id="autocompleteBox"></div>
     </div>
 
-    <!-- KESİNTİSİZ AKAN ENDEKS VE EMTİA BANDI -->
     <div class="tape-container">
       <div class="tape-track" id="tapeTrack"></div>
     </div>
@@ -541,7 +529,6 @@
     </div>
   </div>
 
-  <!-- FLOATING TABBAR -->
   <div class="tabbar-container">
     <div class="tabbar">
       <button class="tab-item active" onclick="switchNav('anasayfa', this)">
@@ -586,7 +573,7 @@
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
     }
 
-    // DOĞRUDAN VE GÜVENLİ HABER AÇICI
+    // DOĞRUDAN HABER AÇICI
     function safeOpenLink(url) {
       if (!url || url === '#' || url === 'undefined') return;
       if (tg && typeof tg.openLink === 'function') {
@@ -596,7 +583,6 @@
       }
     }
 
-    // CANLI SAAT
     function startLiveClock() {
       setInterval(() => {
         const now = new Date();
@@ -656,14 +642,14 @@
       diff.innerText = p.aciklama;
     }
 
-    // YENİLE BUTONU: YÜKLENİYOR EKRANI VE TAZELEME
+    // YENİLE BUTONU (Sıfırla ve yeniden çek)
     async function triggerManualRefresh() {
       triggerHaptic();
       const container = document.getElementById('newsListContainer');
       container.innerHTML = `
         <div style="text-align:center; padding:60px 20px; color:var(--cyan);">
           <div class="spinner"></div>
-          <div style="margin-top:14px; font-weight:700; font-size:14px;">Haberler ve Piyasa Verileri Güncelleniyor...</div>
+          <div style="margin-top:14px; font-weight:700; font-size:14px;">Veriler Güncelleniyor...</div>
         </div>
       `;
       await refreshAllData();
@@ -688,23 +674,23 @@
       } catch (err) {}
     }
 
-    // 2. KESİNTİSİZ AKAN ENDEKS ŞERİDİ
+    // TİCKER TAPE (Yalnızca Tam Eşleşenleri Gösterir)
     function renderTapeSlider() {
       const track = document.getElementById('tapeTrack');
       const macroList = [
-        { code: 'XU100', name: 'BIST 100', defaultPrice: '9.120,40', defaultChange: '+%1.15' },
-        { code: 'XU050', name: 'BIST 50',  defaultPrice: '8.340,10', defaultChange: '+%0.95' },
-        { code: 'XU030', name: 'BIST 30',  defaultPrice: '9.980,50', defaultChange: '+%0.85' },
-        { code: 'USD',   name: 'USD/TRY',  defaultPrice: '34,28',    defaultChange: '+%0.05' },
-        { code: 'EUR',   name: 'EUR/TRY',  defaultPrice: '37,15',    defaultChange: '-%0.12' },
-        { code: 'GRAM',  name: 'GRAM ALTIN', defaultPrice: '3.025,00', defaultChange: '+%0.45' },
-        { code: 'ALTIN.S1', name: 'ALTIN.S1', defaultPrice: '68,55', defaultChange: '+%0.20' }
+        { code: 'XU100', name: 'BIST 100', defaultPrice: '0,00', defaultChange: '%0,00' },
+        { code: 'XU050', name: 'BIST 50',  defaultPrice: '0,00', defaultChange: '%0,00' },
+        { code: 'XU030', name: 'BIST 30',  defaultPrice: '0,00', defaultChange: '%0,00' },
+        { code: 'USD',   name: 'USD/TRY',  defaultPrice: '0,00',    defaultChange: '%0,00' },
+        { code: 'EUR',   name: 'EUR/TRY',  defaultPrice: '0,00',    defaultChange: '%0,00' },
+        { code: 'GRAM',  name: 'GRAM ALTIN', defaultPrice: '0,00', defaultChange: '%0,00' },
+        { code: 'ALTIN.S1', name: 'ALTIN.S1', defaultPrice: '0,00', defaultChange: '%0,00' }
       ];
 
       let html = '';
       macroList.forEach(m => {
-        // Tam kod eşleşmesi (EURASIA veya INGRAM karışmasını engeller)
-        const found = globalData.find(d => d.code === m.code || d.code === m.code.replace('.', ''));
+        // Strict match against exact code
+        const found = globalData.find(d => d.code === m.code);
         const price = found ? found.price : m.defaultPrice;
         const change = found ? found.change : m.defaultChange;
         const isUp = String(change).includes('+') || (!String(change).includes('-') && change !== '0' && change !== '%0,00');
@@ -718,11 +704,10 @@
         `;
       });
 
-      // Kesintisiz döngü için 2 kopya
       track.innerHTML = html + html;
     }
 
-    // 3. ANASAYFA: YALNIZCA FAVORİLER
+    // ANA SAYFA LİSTESİ (SADECE FAVORİLER)
     function renderMainList() {
       const container = document.getElementById('stockListContainer');
       container.innerHTML = '';
@@ -733,7 +718,7 @@
       if (favList.length === 0) {
         container.innerHTML = `
           <div style="background:#0f172a; border:1px solid #1e293b; border-radius:14px; padding:30px; text-align:center; color:#64748b; font-size:13px; margin-top:10px;">
-            Henüz favori eklemediniz.<br>Yukarıdaki arama çubuğundan hisse arayarak favorilerinize ekleyebilirsiniz.
+            Favori listeniz boş.<br>Yukarıdan hisse arayarak favorilere ekleyin.
           </div>
         `;
         return;
@@ -767,7 +752,6 @@
       return div;
     }
 
-    // 1. DOĞRUDAN HABERLER
     function renderNewsList() {
       const container = document.getElementById('newsListContainer');
       if (globalNews.length === 0) {
@@ -789,7 +773,6 @@
       });
     }
 
-    // HİSSE DETAY & GOOGLE NEWS
     async function openStockDetail(code) {
       triggerHaptic();
       const item = globalData.find(d => d.code === code) || { code: code, name: code, price: '0,00', change: '%0,00' };
@@ -876,7 +859,6 @@
       document.getElementById('detailModal').style.display = 'none';
     }
 
-    // ARAMA VE AUTOCOMPLETE
     function handlePortfolioSearch() {
       const q = document.getElementById('portfolioSearchInput').value.trim().toUpperCase();
       const box = document.getElementById('portfolioAutocompleteBox');
@@ -939,7 +921,7 @@
         document.getElementById('deletePortfolioBtn').style.display = 'block';
       } else {
         document.getElementById('addStockTitle').innerText = `${stock.code} Portföye Ekle`;
-        const pNum = parseFloat(String(stock.price).replace('.','').replace(',','.'));
+        const pNum = parseFloat(String(stock.price).replace(/\./g, '').replace(',', '.'));
         document.getElementById('addPriceInput').value = !isNaN(pNum) ? pNum : '';
         document.getElementById('addLotInput').value = '';
         document.getElementById('savePortfolioBtn').innerText = 'Portföye Kaydet';
@@ -999,10 +981,14 @@
 
       myPortfolio.forEach((pos, idx) => {
         const cur = globalData.find(d => d.code === pos.code) || { price: pos.cost.toString(), change: '%0' };
-        const priceNum = parseFloat(String(cur.price).replace('.','').replace(',','.')) || pos.cost;
+        
+        // Correctly parse the price string from the sheet into a usable float
+        const pStr = String(cur.price).replace(/[^\d.,]/g, '').replace(/\./g, '').replace(',', '.');
+        const priceNum = parseFloat(pStr) || pos.cost;
+        
         const currentTotal = priceNum * pos.lot;
         const profitTL = (priceNum - pos.cost) * pos.lot;
-        const profitPct = ((priceNum - pos.cost) / pos.cost) * 100;
+        const profitPct = pos.cost > 0 ? ((priceNum - pos.cost) / pos.cost) * 100 : 0;
         totalVal += currentTotal;
 
         const isUp = profitTL >= 0;
@@ -1019,16 +1005,16 @@
             </div>
           </div>
           <div class="stock-right">
-            <div class="stock-price">${currentTotal.toLocaleString('tr-TR', {minimumFractionDigits: 2})} ₺</div>
+            <div class="stock-price">${currentTotal.toLocaleString('tr-TR', {minimumFractionDigits: 2, maximumFractionDigits: 2})} ₺</div>
             <div class="stock-badge ${isUp ? 'up' : 'down'}">
-              ${badgeSign}${profitTL.toLocaleString('tr-TR', {minimumFractionDigits: 2})} ₺ (${badgeSign}%${profitPct.toFixed(2)})
+              ${badgeSign}${profitTL.toLocaleString('tr-TR', {minimumFractionDigits: 2, maximumFractionDigits: 2})} ₺ (${badgeSign}%${profitPct.toFixed(2)})
             </div>
           </div>
         `;
         container.appendChild(row);
       });
 
-      document.getElementById('totalPortfolioValue').innerText = totalVal.toLocaleString('tr-TR', {minimumFractionDigits: 2}) + ' ₺';
+      document.getElementById('totalPortfolioValue').innerText = totalVal.toLocaleString('tr-TR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' ₺';
     }
 
     window.onload = () => {

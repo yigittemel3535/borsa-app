@@ -38,7 +38,7 @@
       overflow-x: hidden;
     }
 
-    /* ÜST AURORA VE STATUS */
+    /* ÜST AURORA */
     .top-aurora {
       background: radial-gradient(circle at 50% -20%, #1e1b4b 0%, #0c0a2a 45%, var(--bg) 85%);
       padding: 10px 14px 12px;
@@ -114,36 +114,32 @@
       font-size: 16px;
     }
 
-    /* KESİNTİSİZ KAYAN ENDEKS ŞERİDİ (SLIDER) */
+    /* KESİNTİSİZ KAYAN VE TIKLANABİLİR ENDEKS ŞERİDİ */
     .tape-container {
       margin-top: 10px;
-      overflow: hidden;
+      overflow-x: auto;
       white-space: nowrap;
-      position: relative;
+      scrollbar-width: none;
       display: flex;
     }
+    .tape-container::-webkit-scrollbar { display: none; }
+    
     .tape-track {
       display: flex;
-      gap: 10px;
-      animation: tickerSlide 26s linear infinite;
-    }
-    .tape-track:hover { animation-play-state: paused; }
-
-    @keyframes tickerSlide {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+      gap: 8px;
     }
 
     .tape-item {
       background: rgba(15, 23, 42, 0.7);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 10px;
-      padding: 5px 10px;
+      padding: 6px 12px;
       font-size: 11px;
       font-weight: 600;
       display: flex;
       gap: 6px;
       align-items: center;
+      cursor: pointer;
       flex-shrink: 0;
     }
     .tape-title { color: #cbd5e1; }
@@ -179,7 +175,7 @@
     }
     .stock-meta { display: flex; flex-direction: column; gap: 2px; }
     .stock-code { font-size: 15px; font-weight: 700; }
-    .stock-title { font-size: 11px; color: var(--text-muted); max-width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .stock-title { font-size: 11px; color: var(--text-muted); max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     .stock-right { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
     .stock-price { font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; }
@@ -193,7 +189,7 @@
     .stock-badge.up { background: var(--green-bg); color: var(--green); }
     .stock-badge.down { background: var(--red-bg); color: var(--red); }
 
-    /* HABER KARTLARI */
+    /* HABERLER */
     .news-card {
       background: #0d131f;
       border: 1px solid #1e293b;
@@ -216,7 +212,7 @@
     .news-snippet { font-size: 12px; color: #94a3b8; line-height: 1.4; }
     .news-date { font-size: 10px; color: #64748b; margin-top: 6px; }
 
-    /* AUTOCOMPLETE POPUP (PORTFÖY İÇİN) */
+    /* AUTOCOMPLETE POPUP */
     .autocomplete-list {
       position: absolute;
       top: 50px;
@@ -238,9 +234,8 @@
       justify-content: space-between;
       cursor: pointer;
     }
-    .autocomplete-item:hover { background: rgba(255,255,255,0.05); }
 
-    /* TAM EKRAN MODAL / DETAY PENCERESİ */
+    /* MODAL */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -281,7 +276,7 @@
       cursor: pointer;
     }
 
-    /* YÜZEN TABBAR */
+    /* FLOATING TABBAR */
     .tabbar-container {
       position: fixed;
       bottom: 20px;
@@ -324,7 +319,7 @@
 </head>
 <body>
 
-  <!-- AURORA ÜST HEADER -->
+  <!-- AURORA HEADER -->
   <div class="top-aurora">
     <div class="status-row">
       <div class="status-chip">
@@ -341,28 +336,25 @@
       <div class="icon-btn" onclick="triggerHaptic()">🔔</div>
       <div class="icon-btn" onclick="switchNav('diger')">⚙️</div>
 
-      <!-- Autocomplete Kutusu (Portföy ve Hızlı Arama İçin) -->
       <div class="autocomplete-list" id="autocompleteBox"></div>
     </div>
 
-    <!-- KAYAN SLIDER (TICKER TAPE) -->
+    <!-- TIKLANABİLİR ENDEKS VE EMTİA ŞERİDİ -->
     <div class="tape-container">
-      <div class="tape-track" id="tapeTrack">
-        <!-- JS ile çift kopya doldurulacak -->
-      </div>
+      <div class="tape-track" id="tapeTrack"></div>
     </div>
   </div>
 
-  <!-- 1. ANASAYFA (FAVORİLER VE BIST) -->
+  <!-- 1. ANASAYFA -->
   <div id="view-anasayfa" class="page-section active">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-      <div style="font-size:18px; font-weight:700;">Favorilerim (<span id="favCount">0</span>)</div>
+      <div style="font-size:18px; font-weight:700;">Hisseler & Favoriler (<span id="favCount">0</span>)</div>
       <button style="background:var(--cyan-bg); border:1px solid rgba(56,189,248,0.3); color:var(--cyan); font-size:12px; font-weight:600; padding:6px 12px; border-radius:16px;" onclick="triggerHaptic()">🔔 Alarmlarım</button>
     </div>
     <div class="stock-list" id="stockListContainer"></div>
   </div>
 
-  <!-- 2. HABERLER (OTOMATİK SHEETS GÜNCELLEMELİ) -->
+  <!-- 2. HABERLER -->
   <div id="view-haberler" class="page-section">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
       <div style="font-size:18px; font-weight:700;">KAP & SPK Haberleri</div>
@@ -373,36 +365,30 @@
     </div>
   </div>
 
-  <!-- 3. PORTFÖY (HİSSE EKLEME VE HESAPLAMA) -->
+  <!-- 3. PORTFÖY -->
   <div id="view-portfoy" class="page-section">
     <div style="font-size:13px; color:#64748b;">Toplam Varlık</div>
     <div style="font-size:26px; font-weight:800; margin:4px 0 16px;" id="totalPortfolioValue">0,00 ₺</div>
 
-    <div style="margin-bottom:14px;">
+    <div style="margin-bottom:14px; position:relative;">
       <input type="text" id="portfolioSearchInput" placeholder="Hisse ara ve portföye ekle (örn: tup, asels)..." 
              style="width:100%; background:#0f172a; border:1px solid #1e293b; padding:12px 14px; border-radius:12px; color:#fff; outline:none;"
              oninput="handlePortfolioSearch()">
+      <div class="autocomplete-list" id="portfolioAutocompleteBox"></div>
     </div>
 
-    <div id="portfolioListContainer">
-      <div style="background:#0f172a; border:1px solid #1e293b; border-radius:14px; padding:30px; text-align:center; color:#64748b; font-size:13px;">
-        Portföyünüz boş. Arama yaparak hisse ekleyebilirsiniz.
-      </div>
-    </div>
+    <div id="portfolioListContainer"></div>
   </div>
 
-  <!-- 4. DİĞER / AYARLAR -->
+  <!-- 4. DİĞER -->
   <div id="view-diger" class="page-section">
     <div style="font-size:18px; font-weight:700; margin-bottom:16px;">Ayarlar</div>
     <div style="background:#0f172a; border:1px solid #1e293b; border-radius:14px; padding:14px; display:flex; justify-content:space-between; margin-bottom:10px;">
       <span>Koyu Tema</span><span style="color:var(--cyan); font-weight:700;">AÇIK</span>
     </div>
-    <div style="background:#0f172a; border:1px solid #1e293b; border-radius:14px; padding:14px; display:flex; justify-content:space-between;">
-      <span>Titreşimli Geri Bildirim (Haptic)</span><span style="color:var(--cyan); font-weight:700;">AÇIK</span>
-    </div>
   </div>
 
-  <!-- DETAY & GOOGLE NEWS MODAL -->
+  <!-- DETAY MODALI (HİSSE VEYA ENDEKS İÇİN) -->
   <div class="modal-overlay" id="detailModal">
     <div class="modal-sheet">
       <div class="modal-header">
@@ -418,16 +404,20 @@
 
       <div style="background:#0f172a; border:1px solid #1e293b; border-radius:14px; padding:14px; display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
         <div>
-          <div style="font-size:11px; color:#64748b;">Son Fiyat</div>
+          <div style="font-size:11px; color:#64748b;">Son Değer</div>
           <div style="font-size:20px; font-weight:800;" id="modalStockPrice">0,00 ₺</div>
         </div>
         <div id="modalStockBadge" class="stock-badge up">%0,00</div>
       </div>
 
-      <div style="font-size:15px; font-weight:700; margin-bottom:10px;">İlgili Haberler</div>
-      <div id="modalNewsContainer">
-        <div style="text-align:center; padding:20px; color:#64748b;">Haberler taranıyor...</div>
+      <!-- Endeks Bileşenleri Alanı (Endekse tıklandığında açılır) -->
+      <div id="modalIndexStocksContainer" style="display:none; margin-bottom:18px;">
+        <div style="font-size:14px; font-weight:700; margin-bottom:8px; color:var(--cyan);">Endekse Dahil Hisseler</div>
+        <div class="stock-list" id="modalIndexList"></div>
       </div>
+
+      <div style="font-size:15px; font-weight:700; margin-bottom:10px;">İlgili Haberler</div>
+      <div id="modalNewsContainer"></div>
     </div>
   </div>
 
@@ -452,7 +442,7 @@
     </div>
   </div>
 
-  <!-- YÜZEN ALT MENÜ -->
+  <!-- FLOATING TABBAR -->
   <div class="tabbar-container">
     <div class="tabbar">
       <button class="tab-item active" onclick="switchNav('anasayfa', this)">
@@ -486,13 +476,37 @@
 
     let globalData = [];
     let globalNews = [];
-    let favorites = JSON.parse(localStorage.getItem('bist_favs')) || ['TUPRS', 'ALTIN.S1', 'THYAO', 'AKSA', 'KCHOL'];
+    let favorites = JSON.parse(localStorage.getItem('bist_favs')) || ['TUPRS', 'ALTIN.S1', 'THYAO', 'ASELS', 'AKSA', 'KCHOL'];
     let myPortfolio = JSON.parse(localStorage.getItem('bist_portfolio')) || [];
+    let isMarketOpenGlobal = false;
     let selectedStockForModal = null;
     let selectedStockForAdd = null;
 
     function triggerHaptic() {
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+    }
+
+    // GÜVENLİ LİNK AÇMA (Engellenen Google News linklerini Telegram dışı tarayıcıda açar)
+    function safeOpenLink(url) {
+      if (!url || url === '#' || url === 'undefined') return;
+      if (tg && typeof tg.openLink === 'function') {
+        tg.openLink(url);
+      } else {
+        window.open(url, '_blank');
+      }
+    }
+
+    // HER SANİYE AKAN CANLI SAAT MOTORU
+    function startLiveClock() {
+      setInterval(() => {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        const txt = document.getElementById('marketStatusText');
+        const dot = document.getElementById('statusDot');
+        
+        dot.className = isMarketOpenGlobal ? 'status-dot open' : 'status-dot';
+        txt.innerText = (isMarketOpenGlobal ? 'Piyasa Açık' : 'Piyasa Kapalı') + ' • ' + timeStr;
+      }, 1000);
     }
 
     function switchNav(viewId, btn) {
@@ -508,7 +522,6 @@
       if (viewId === 'portfoy') renderPortfolio();
     }
 
-    // VERİLERİ YÜKLE
     async function refreshAllData() {
       try {
         const res = await fetch(API_ENDPOINT);
@@ -517,7 +530,7 @@
         if (data.marketData) {
           globalData = data.marketData;
           globalNews = data.news || [];
-          updateStatus(data.status);
+          isMarketOpenGlobal = data.status;
           renderTapeSlider();
           renderMainList();
           renderNewsList();
@@ -526,59 +539,54 @@
       } catch (err) {}
     }
 
-    function updateStatus(isOpen) {
-      const dot = document.getElementById('statusDot');
-      const txt = document.getElementById('marketStatusText');
-      const now = new Date();
-      const timeStr = now.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      dot.className = isOpen ? 'status-dot open' : 'status-dot';
-      txt.innerText = (isOpen ? 'Piyasa Açık' : 'Piyasa Kapalı') + ' • ' + timeStr;
-    }
-
-    // KAYAN ŞERİT (BIST 100, 50, 30, USD, EUR, GRAM, ALTIN.S1)
+    // KAYAN VE TIKLANABİLİR ŞERİT
     function renderTapeSlider() {
       const track = document.getElementById('tapeTrack');
       const wanted = ['XU100', 'XU050', 'XU030', 'USD', 'EUR', 'GRAM', 'ALTIN.S1'];
-      let html = '';
+      track.innerHTML = '';
 
       wanted.forEach(code => {
-        const item = globalData.find(d => d.code.toUpperCase().includes(code)) || { code: code, price: '0,00', change: '%0,00' };
+        const item = globalData.find(d => d.code.toUpperCase().includes(code)) || { code: code, price: '0,00', change: '%0,00', name: code };
         const isUp = item.change.includes('+') || (!item.change.includes('-') && item.change !== '0' && item.change !== '%0,00');
         const badgeClass = isUp ? 'up' : 'down';
         
-        html += `
-          <div class="tape-item">
-            <span class="tape-title">${item.code}</span>
-            <span class="tape-val ${badgeClass}">${item.price} ${item.change}</span>
-          </div>
+        const el = document.createElement('div');
+        el.className = 'tape-item';
+        el.onclick = () => openStockDetail(item.code);
+        el.innerHTML = `
+          <span class="tape-title">${item.code}</span>
+          <span class="tape-val ${badgeClass}">${item.price} ${item.change}</span>
         `;
+        track.appendChild(el);
       });
-
-      // Kesintisiz döngü için iki kez ekle
-      track.innerHTML = html + html;
     }
 
-    // ANA SAYFA LİSTESİ (FAVORİLER)
+    // ANA SAYFA LİSTESİ
     function renderMainList() {
       const container = document.getElementById('stockListContainer');
-      const favList = globalData.filter(d => favorites.includes(d.code));
-      document.getElementById('favCount').innerText = favList.length;
-
-      if (favList.length === 0) {
-        container.innerHTML = '<div style="text-align:center; padding:40px; color:#64748b;">Favori hisseniz bulunmuyor.</div>';
-        return;
-      }
-
       container.innerHTML = '';
-      favList.forEach(item => {
-        container.appendChild(createStockRow(item));
+
+      // Favoriler en üstte, sonra diğer hisseler
+      let displayList = [...globalData].sort((a, b) => {
+        const aFav = favorites.includes(a.code) ? 1 : 0;
+        const bFav = favorites.includes(b.code) ? 1 : 0;
+        return bFav - aFav;
+      });
+
+      document.getElementById('favCount').innerText = favorites.length;
+
+      displayList.forEach(item => {
+        if (item.type !== 'endeks') {
+          container.appendChild(createStockRow(item));
+        }
       });
     }
 
     function createStockRow(item) {
       const isUp = item.change.includes('+') || (!item.change.includes('-') && item.change !== '0' && item.change !== '%0,00');
       const badgeClass = isUp ? 'up' : 'down';
-      
+      const isFav = favorites.includes(item.code);
+
       const div = document.createElement('div');
       div.className = 'stock-row';
       div.onclick = () => openStockDetail(item.code);
@@ -586,7 +594,7 @@
         <div class="stock-left">
           <div class="stock-avatar">${item.code.substring(0,2)}</div>
           <div class="stock-meta">
-            <div class="stock-code">${item.code}</div>
+            <div class="stock-code">${item.code} ${isFav ? '⭐' : ''}</div>
             <div class="stock-title">${item.name}</div>
           </div>
         </div>
@@ -598,11 +606,11 @@
       return div;
     }
 
-    // HABERLER LİSTESİ
+    // HABERLER LİSTESİ (Sütun kayması düzeltildi)
     function renderNewsList() {
       const container = document.getElementById('newsListContainer');
       if (globalNews.length === 0) {
-        container.innerHTML = '<div style="text-align:center; padding:40px; color:#64748b;">Henüz kaydedilmiş haber bulunamadı.</div>';
+        container.innerHTML = '<div style="text-align:center; padding:40px; color:#64748b;">Kayıtlı haber bulunamadı.</div>';
         return;
       }
 
@@ -610,20 +618,20 @@
       globalNews.forEach(n => {
         const div = document.createElement('div');
         div.className = 'news-card';
-        div.onclick = () => window.open(n.link, '_blank');
+        div.onclick = () => safeOpenLink(n.link);
         div.innerHTML = `
           <span class="news-tag">${n.source}</span>
           <div class="news-title">${n.title}</div>
-          <div class="news-date">Tarih: ${n.date}</div>
+          <div class="news-date">${n.date} • Habere Git ↗</div>
         `;
         container.appendChild(div);
       });
     }
 
-    // HİSSE DETAY VE GOOGLE NEWS
+    // HİSSE & ENDEKS DETAY MODAL
     async function openStockDetail(code) {
       triggerHaptic();
-      const item = globalData.find(d => d.code === code) || { code: code, name: code, price: '0,00', change: '%0,00' };
+      const item = globalData.find(d => d.code === code) || { code: code, name: code, price: '0,00', change: '%0,00', type: 'bist' };
       selectedStockForModal = item;
 
       document.getElementById('modalStockCode').innerText = item.code;
@@ -636,24 +644,37 @@
       badge.innerText = item.change;
 
       updateModalFavIcon();
+
+      // Endeks tıklandıysa (XU100, XU030 vb.) hisse bileşenlerini listele
+      const indexContainer = document.getElementById('modalIndexStocksContainer');
+      const indexList = document.getElementById('modalIndexList');
+      if (item.type === 'endeks' || item.code.startsWith('XU')) {
+        indexContainer.style.display = 'block';
+        indexList.innerHTML = '';
+        globalData.filter(d => d.type === 'bist' || (!d.type && !d.code.startsWith('XU'))).forEach(st => {
+          indexList.appendChild(createStockRow(st));
+        });
+      } else {
+        indexContainer.style.display = 'none';
+      }
+
       document.getElementById('detailModal').style.display = 'flex';
 
-      // Sembole ait haber filtreleme
+      // İlgili Haberler
       const modalNews = document.getElementById('modalNewsContainer');
-      modalNews.innerHTML = '<div style="text-align:center; padding:20px; color:#64748b;">Haberler taranıyor...</div>';
+      modalNews.innerHTML = '<div style="text-align:center; padding:20px; color:#64748b;">Haberler yükleniyor...</div>';
 
       const localMatches = globalNews.filter(n => n.title.toUpperCase().includes(code));
       if (localMatches.length > 0) {
         renderModalNewsCards(localMatches, modalNews);
       } else {
-        // Tabloda haber yoksa Google News RSS'e bağlan
         try {
           const res = await fetch(`${API_ENDPOINT}?action=stock_news&symbol=${code}`);
           const json = await res.json();
           if (json.news && json.news.length > 0) {
             renderModalNewsCards(json.news, modalNews);
           } else {
-            modalNews.innerHTML = '<div style="text-align:center; padding:20px; color:#64748b;">Bu hisse ile ilgili güncel haber bulunamadı.</div>';
+            modalNews.innerHTML = '<div style="text-align:center; padding:20px; color:#64748b;">İlgili haber bulunamadı.</div>';
           }
         } catch (e) {
           modalNews.innerHTML = '<div style="text-align:center; padding:20px; color:#64748b;">Haber servisine bağlanılamadı.</div>';
@@ -666,11 +687,11 @@
       newsArray.forEach(n => {
         const div = document.createElement('div');
         div.className = 'news-card';
-        div.onclick = () => window.open(n.link, '_blank');
+        div.onclick = () => safeOpenLink(n.link);
         div.innerHTML = `
           <div class="news-title">${n.title}</div>
           <div class="news-snippet">${n.snippet || ''}</div>
-          <div class="news-date">${n.date || ''} • Kaynağa Git ↗</div>
+          <div class="news-date">Haberi Aç ↗</div>
         `;
         container.appendChild(div);
       });
@@ -696,13 +717,13 @@
       document.getElementById('detailModal').style.display = 'none';
     }
 
-    // AUTOCOMPLETE (t, tu, tup arama tamamlama)
+    // ARAMA VE AUTOCOMPLETE
     function handlePortfolioSearch() {
       const q = document.getElementById('portfolioSearchInput').value.trim().toUpperCase();
-      const box = document.getElementById('autocompleteBox');
+      const box = document.getElementById('portfolioAutocompleteBox');
       if (!q) { box.style.display = 'none'; return; }
 
-      const matches = globalData.filter(d => d.code.startsWith(q) || d.name.toUpperCase().includes(q)).slice(0, 5);
+      const matches = globalData.filter(d => d.code.includes(q) || d.name.toUpperCase().includes(q)).slice(0, 6);
       if (matches.length === 0) { box.style.display = 'none'; return; }
 
       box.innerHTML = '';
@@ -724,7 +745,7 @@
       const box = document.getElementById('autocompleteBox');
       if (!q) { box.style.display = 'none'; return; }
 
-      const matches = globalData.filter(d => d.code.startsWith(q) || d.name.toUpperCase().includes(q)).slice(0, 5);
+      const matches = globalData.filter(d => d.code.includes(q) || d.name.toUpperCase().includes(q)).slice(0, 6);
       if (matches.length === 0) { box.style.display = 'none'; return; }
 
       box.innerHTML = '';
@@ -744,11 +765,11 @@
       box.style.display = 'block';
     }
 
-    // PORTFÖY EKLEME VE HESAPLAMA
+    // PORTFÖY MODALI
     function openAddPortfolioModal(stock) {
       triggerHaptic();
       selectedStockForAdd = stock;
-      document.getElementById('autocompleteBox').style.display = 'none';
+      document.getElementById('portfolioAutocompleteBox').style.display = 'none';
       document.getElementById('addStockTitle').innerText = `${stock.code} Portföye Ekle`;
       document.getElementById('addPriceInput').value = parseFloat(stock.price.replace('.','').replace(',','.'));
       document.getElementById('addLotInput').value = '';
@@ -765,12 +786,7 @@
       const cost = parseFloat(document.getElementById('addPriceInput').value);
       if (!lot || !cost) return;
 
-      myPortfolio.push({
-        code: selectedStockForAdd.code,
-        lot: lot,
-        cost: cost
-      });
-
+      myPortfolio.push({ code: selectedStockForAdd.code, lot: lot, cost: cost });
       localStorage.setItem('bist_portfolio', JSON.stringify(myPortfolio));
       closeAddModal();
       document.getElementById('portfolioSearchInput').value = '';
@@ -791,17 +807,14 @@
       let totalVal = 0;
       container.innerHTML = '';
 
-      myPortfolio.forEach((pos, idx) => {
-        const currentStock = globalData.find(d => d.code === pos.code) || { price: pos.cost.toString(), change: '%0' };
-        const curPrice = parseFloat(currentStock.price.replace('.','').replace(',','.')) || pos.cost;
-        const posValue = curPrice * pos.lot;
-        const profit = (curPrice - pos.cost) * pos.lot;
-        const profitPct = ((curPrice - pos.cost) / pos.cost) * 100;
-        totalVal += posValue;
+      myPortfolio.forEach(pos => {
+        const cur = globalData.find(d => d.code === pos.code) || { price: pos.cost.toString(), change: '%0' };
+        const priceNum = parseFloat(cur.price.replace('.','').replace(',','.')) || pos.cost;
+        const val = priceNum * pos.lot;
+        const profitPct = ((priceNum - pos.cost) / pos.cost) * 100;
+        totalVal += val;
 
-        const isUp = profit >= 0;
-        const badgeClass = isUp ? 'up' : 'down';
-
+        const isUp = profitPct >= 0;
         const row = document.createElement('div');
         row.className = 'stock-row';
         row.innerHTML = `
@@ -809,12 +822,12 @@
             <div class="stock-avatar">${pos.code.substring(0,2)}</div>
             <div class="stock-meta">
               <div class="stock-code">${pos.code}</div>
-              <div class="stock-title">${pos.lot} Adet • Maliyet: ${pos.cost.toFixed(2)} ₺</div>
+              <div class="stock-title">${pos.lot} Lot • Maliyet: ${pos.cost.toFixed(2)} ₺</div>
             </div>
           </div>
           <div class="stock-right">
-            <div class="stock-price">${posValue.toLocaleString('tr-TR', {minimumFractionDigits: 2})} ₺</div>
-            <div class="stock-badge ${badgeClass}">${isUp ? '+' : ''}${profitPct.toFixed(2)}%</div>
+            <div class="stock-price">${val.toLocaleString('tr-TR', {minimumFractionDigits: 2})} ₺</div>
+            <div class="stock-badge ${isUp ? 'up' : 'down'}">${isUp ? '+' : ''}${profitPct.toFixed(2)}%</div>
           </div>
         `;
         container.appendChild(row);
@@ -823,7 +836,10 @@
       document.getElementById('totalPortfolioValue').innerText = totalVal.toLocaleString('tr-TR', {minimumFractionDigits: 2}) + ' ₺';
     }
 
-    window.onload = refreshAllData;
+    window.onload = () => {
+      startLiveClock();
+      refreshAllData();
+    };
   </script>
 </body>
 </html>

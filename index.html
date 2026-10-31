@@ -102,22 +102,33 @@
       font-size: 16px;
     }
 
-    /* KESİNTİSİZ KAYAN VE TIKLANABİLİR SLIDE MENÜ */
+    /* KESİNTİSİZ OTOMATİK AKAN SLIDER (TICKER TAPE) */
     .tape-container {
       margin-top: 10px;
-      overflow-x: auto;
+      overflow: hidden;
       white-space: nowrap;
-      scrollbar-width: none;
+      position: relative;
       display: flex;
     }
-    .tape-container::-webkit-scrollbar { display: none; }
-    .tape-track { display: flex; gap: 8px; }
+    .tape-track {
+      display: flex;
+      gap: 10px;
+      animation: tickerSlide 24s linear infinite;
+    }
+    .tape-track:hover, .tape-track:active {
+      animation-play-state: paused;
+    }
+
+    @keyframes tickerSlide {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
 
     .tape-item {
-      background: rgba(15, 23, 42, 0.7);
+      background: rgba(15, 23, 42, 0.75);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 10px;
-      padding: 6px 12px;
+      padding: 5px 12px;
       font-size: 11px;
       font-weight: 600;
       display: flex;
@@ -260,7 +271,7 @@
       cursor: pointer;
     }
 
-    /* DİĞER / ARAÇLAR MENÜSÜ KARTLARI */
+    /* DİĞER MENÜSÜ & KARTLAR */
     .tool-card {
       background: #0f172a;
       border: 1px solid #1e293b;
@@ -271,9 +282,7 @@
       justify-content: space-between;
       margin-bottom: 12px;
       cursor: pointer;
-      transition: border-color 0.2s;
     }
-    .tool-card:hover { border-color: var(--cyan); }
     .tool-left { display: flex; align-items: center; gap: 14px; }
     .tool-icon {
       width: 44px;
@@ -287,13 +296,26 @@
       font-size: 20px;
     }
 
-    /* ALTIN PRİM ÖZEL EKRANI */
     .metric-box {
       background: #0f172a;
       border: 1px solid #1e293b;
       border-radius: 14px;
       padding: 14px;
       margin-bottom: 12px;
+    }
+
+    /* YÜKLEME SPINNER */
+    .spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid rgba(56, 189, 248, 0.2);
+      border-top-color: var(--cyan);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
 
     /* FLOATING TABBAR */
@@ -359,16 +381,16 @@
       <div class="autocomplete-list" id="autocompleteBox"></div>
     </div>
 
-    <!-- TIKLANABİLİR ENDEKS VE EMTİA ŞERİDİ -->
+    <!-- KESİNTİSİZ AKAN ENDEKS VE EMTİA BANDI -->
     <div class="tape-container">
       <div class="tape-track" id="tapeTrack"></div>
     </div>
   </div>
 
-  <!-- 1. ANASAYFA -->
+  <!-- 1. ANASAYFA (YALNIZCA FAVORİLER) -->
   <div id="view-anasayfa" class="page-section active">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-      <div style="font-size:18px; font-weight:700;">Tüm Hisseler & Favoriler (<span id="totalStockCount">0</span>)</div>
+      <div style="font-size:18px; font-weight:700;">Favorilerim (<span id="favCount">0</span>)</div>
       <button style="background:var(--cyan-bg); border:1px solid rgba(56,189,248,0.3); color:var(--cyan); font-size:12px; font-weight:600; padding:6px 12px; border-radius:16px;" onclick="triggerHaptic()">🔔 Alarmlarım</button>
     </div>
     <div class="stock-list" id="stockListContainer"></div>
@@ -378,11 +400,9 @@
   <div id="view-haberler" class="page-section">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
       <div style="font-size:18px; font-weight:700;">KAP & SPK Haberleri</div>
-      <button style="background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.1); color:#fff; font-size:12px; padding:6px 12px; border-radius:12px;" onclick="refreshAllData()">🔄 Yenile</button>
+      <button style="background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.1); color:#fff; font-size:12px; padding:6px 12px; border-radius:12px; cursor:pointer;" onclick="triggerManualRefresh()">🔄 Yenile</button>
     </div>
-    <div id="newsListContainer">
-      <div style="text-align:center; padding:40px; color:#64748b;">Haberler yükleniyor...</div>
-    </div>
+    <div id="newsListContainer"></div>
   </div>
 
   <!-- 3. PORTFÖY -->
@@ -391,7 +411,7 @@
     <div style="font-size:26px; font-weight:800; margin:4px 0 16px;" id="totalPortfolioValue">0,00 ₺</div>
 
     <div style="margin-bottom:14px; position:relative;">
-      <input type="text" id="portfolioSearchInput" placeholder="Hisse ara ve portföye ekle (örn: tuprs, doas, asels)..." 
+      <input type="text" id="portfolioSearchInput" placeholder="Hisse ara ve ekle (örn: tuprs, doas)..." 
              style="width:100%; background:#0f172a; border:1px solid #1e293b; padding:12px 14px; border-radius:12px; color:#fff; outline:none;"
              oninput="handlePortfolioSearch()">
       <div class="autocomplete-list" id="portfolioAutocompleteBox"></div>
@@ -400,11 +420,10 @@
     <div id="portfolioListContainer"></div>
   </div>
 
-  <!-- 4. DİĞER (ARAÇLAR MENÜSÜ) -->
+  <!-- 4. DİĞER (ARAÇLAR) -->
   <div id="view-diger" class="page-section">
     <div style="font-size:18px; font-weight:700; margin-bottom:16px;">Finansal Araçlar</div>
     
-    <!-- ALTIN.S1 Kartı -->
     <div class="tool-card" onclick="openAltinPrimScreen()">
       <div class="tool-left">
         <div class="tool-icon">🪙</div>
@@ -417,28 +436,26 @@
     </div>
   </div>
 
-  <!-- 5. ÖZEL ALTIN.S1 PRİM ANALİZ EKRANI (DİĞER İÇİNDEN AÇILIR) -->
+  <!-- 5. ALTIN.S1 ÖZEL EKRANI -->
   <div id="view-altin-prim" class="page-section">
     <div style="display:flex; align-items:center; gap:12px; margin-bottom:18px;">
       <button onclick="backToDiger()" style="background:#1e293b; border:none; color:#fff; font-size:14px; padding:6px 14px; border-radius:12px; cursor:pointer;">← Geri</button>
       <div style="font-size:17px; font-weight:800;">ALTIN.S1 Prim / İskonto Analizi</div>
     </div>
 
-    <!-- Büyük Sonuç Kartı -->
-    <div id="primResultCard" style="background:#0f172a; border:1px solid #1e293b; border-radius:18px; padding:20px; text-align:center; margin-bottom:16px;">
+    <div style="background:#0f172a; border:1px solid #1e293b; border-radius:18px; padding:20px; text-align:center; margin-bottom:16px;">
       <div style="font-size:12px; color:#94a3b8; margin-bottom:4px;">Net Durum</div>
-      <div style="font-size:26px; font-weight:800;" id="primStatusBadge">Hesaplanıyor...</div>
+      <div style="font-size:26px; font-weight:800;" id="primStatusBadge">Yükleniyor...</div>
       <div style="font-size:13px; color:#64748b; margin-top:6px;" id="primDiffText">0,00 ₺ fark</div>
     </div>
 
-    <!-- Metrik Kutuları -->
     <div class="metric-box">
       <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
         <span style="color:#94a3b8; font-size:13px;">ALTIN.S1 Son Fiyat</span>
         <strong id="primAltinS1Price" style="font-size:15px;">0,00 ₺</strong>
       </div>
       <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-        <span style="color:#94a3b8; font-size:13px;">Sertifika Gram Karşılığı (100 Lot)</span>
+        <span style="color:#94a3b8; font-size:13px;">Sertifika Gram Eşdeğeri (100 Lot)</span>
         <strong id="primSertifikaGram" style="font-size:15px; color:var(--gold);">0,00 ₺</strong>
       </div>
       <div style="display:flex; justify-content:space-between;">
@@ -449,12 +466,12 @@
 
     <div style="background:#0f172a; border:1px solid #1e293b; border-radius:14px; padding:14px;">
       <div style="font-size:12px; color:#64748b; line-height:1.5;">
-        ℹ️ <strong>Nasıl Hesaplanır?</strong> 1 Lot Darphane Altın Sertifikası (ALTIN.S1) tam olarak 0,01 gram has altına eşittir (100 Lot = 1 Gram). Sertifika fiyatının 100 katı ile piyasadaki spot gram altın arasındaki fark prim veya iskonto oranını verir.
+        ℹ️ 1 Lot Darphane Altın Sertifikası (ALTIN.S1) = 0,01 gram has altındır. Sertifika fiyatının 100 katı ile piyasa spot altın fiyatı kıyaslanarak hesaplanır.
       </div>
     </div>
   </div>
 
-  <!-- AYARLAR MODAL (ÜSTTEKİ DİŞLİ İLE AÇILIR) -->
+  <!-- AYARLAR MODAL -->
   <div class="modal-overlay" id="settingsModal">
     <div class="modal-sheet">
       <div class="modal-header">
@@ -470,7 +487,7 @@
     </div>
   </div>
 
-  <!-- DETAY MODALI (HİSSE / ENDEKS) -->
+  <!-- DETAY MODALI -->
   <div class="modal-overlay" id="detailModal">
     <div class="modal-sheet">
       <div class="modal-header">
@@ -502,7 +519,7 @@
     </div>
   </div>
 
-  <!-- PORTFÖYE EKLEME / DÜZENLEME MODALI -->
+  <!-- PORTFÖYE EKLEME / DÜZENLEME MODAL -->
   <div class="modal-overlay" id="addPortfolioModal">
     <div class="modal-sheet">
       <div class="modal-header">
@@ -558,7 +575,8 @@
 
     let globalData = [];
     let globalNews = [];
-    let favorites = JSON.parse(localStorage.getItem('bist_favs')) || ['DOAS', 'TUPRS', 'ALTIN.S1', 'THYAO', 'AKSA', 'KCHOL'];
+    let backendPrimData = null;
+    let favorites = JSON.parse(localStorage.getItem('bist_favs')) || ['TUPRS', 'ALTIN.S1', 'DOAS', 'THYAO'];
     let myPortfolio = JSON.parse(localStorage.getItem('bist_portfolio')) || [];
     let isMarketOpenGlobal = false;
     let selectedStockForModal = null;
@@ -568,6 +586,7 @@
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
     }
 
+    // DOĞRUDAN VE GÜVENLİ HABER AÇICI
     function safeOpenLink(url) {
       if (!url || url === '#' || url === 'undefined') return;
       if (tg && typeof tg.openLink === 'function') {
@@ -577,13 +596,13 @@
       }
     }
 
+    // CANLI SAAT
     function startLiveClock() {
       setInterval(() => {
         const now = new Date();
         const timeStr = now.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
         const txt = document.getElementById('marketStatusText');
         const dot = document.getElementById('statusDot');
-        
         dot.className = isMarketOpenGlobal ? 'status-dot open' : 'status-dot';
         txt.innerText = (isMarketOpenGlobal ? 'Piyasa Açık' : 'Piyasa Kapalı') + ' • ' + timeStr;
       }, 1000);
@@ -598,8 +617,9 @@
       if (target) target.classList.add('active');
       if (btn) btn.classList.add('active');
 
-      if (viewId === 'haberler') refreshAllData();
+      if (viewId === 'haberler') renderNewsList();
       if (viewId === 'portfoy') renderPortfolio();
+      if (viewId === 'anasayfa') renderMainList();
     }
 
     function openSettingsModal() {
@@ -610,12 +630,11 @@
       document.getElementById('settingsModal').style.display = 'none';
     }
 
-    // DİĞER -> ALTIN.S1 GEÇİŞİ
     function openAltinPrimScreen() {
       triggerHaptic();
       document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
       document.getElementById('view-altin-prim').classList.add('active');
-      calculateAltinPrim();
+      displayAltinPrim();
     }
     function backToDiger() {
       triggerHaptic();
@@ -623,33 +642,31 @@
       document.getElementById('view-diger').classList.add('active');
     }
 
-    function calculateAltinPrim() {
-      const altinS1Item = globalData.find(d => d.code === 'ALTIN.S1' || d.code.includes('ALTIN.S1')) || { price: "68,55" };
-      const gramSpotItem = globalData.find(d => d.code === 'GRAM' || d.code.includes('HAS') || d.code === 'GA') || { price: "3.025,00" };
-
-      const s1Price = parseFloat(String(altinS1Item.price).replace('.','').replace(',','.')) || 68.55;
-      const spotPrice = parseFloat(String(gramSpotItem.price).replace('.','').replace(',','.')) || 3025.00;
-
-      const sertifikaGram = s1Price * 100;
-      const fark = sertifikaGram - spotPrice;
-      const yuzde = (fark / spotPrice) * 100;
-
-      document.getElementById('primAltinS1Price').innerText = s1Price.toFixed(2) + ' ₺';
-      document.getElementById('primSertifikaGram').innerText = sertifikaGram.toFixed(2) + ' ₺';
-      document.getElementById('primSpotGram').innerText = spotPrice.toFixed(2) + ' ₺';
+    function displayAltinPrim() {
+      if (!backendPrimData) return;
+      const p = backendPrimData;
+      document.getElementById('primAltinS1Price').innerText = p.s1Price + ' ₺';
+      document.getElementById('primSertifikaGram').innerText = p.sertifikaGram + ' ₺';
+      document.getElementById('primSpotGram').innerText = p.spotGram + ' ₺';
 
       const badge = document.getElementById('primStatusBadge');
-      const diffText = document.getElementById('primDiffText');
+      const diff = document.getElementById('primDiffText');
+      badge.innerText = `${p.isPrim ? '📈' : '📉'} ${p.durumMetni} (%${p.yuzdeFark})`;
+      badge.style.color = p.isPrim ? 'var(--red)' : 'var(--green)';
+      diff.innerText = p.aciklama;
+    }
 
-      if (yuzde >= 0) {
-        badge.innerText = `📈 Primli (%+${yuzde.toFixed(2)})`;
-        badge.style.color = '#ef4444';
-        diffText.innerText = `Gram başına +${fark.toFixed(2)} ₺ daha pahalı`;
-      } else {
-        badge.innerText = `📉 İskontolu (%${yuzde.toFixed(2)})`;
-        badge.style.color = '#22c55e';
-        diffText.innerText = `Gram başına ${Math.abs(fark).toFixed(2)} ₺ daha ucuz`;
-      }
+    // YENİLE BUTONU: YÜKLENİYOR EKRANI VE TAZELEME
+    async function triggerManualRefresh() {
+      triggerHaptic();
+      const container = document.getElementById('newsListContainer');
+      container.innerHTML = `
+        <div style="text-align:center; padding:60px 20px; color:var(--cyan);">
+          <div class="spinner"></div>
+          <div style="margin-top:14px; font-weight:700; font-size:14px;">Haberler ve Piyasa Verileri Güncelleniyor...</div>
+        </div>
+      `;
+      await refreshAllData();
     }
 
     async function refreshAllData() {
@@ -660,7 +677,9 @@
         if (data.marketData && data.marketData.length > 0) {
           globalData = data.marketData;
           globalNews = data.news || [];
+          backendPrimData = data.altinPrim;
           isMarketOpenGlobal = data.status;
+
           renderTapeSlider();
           renderMainList();
           renderNewsList();
@@ -669,43 +688,58 @@
       } catch (err) {}
     }
 
+    // 2. KESİNTİSİZ AKAN ENDEKS ŞERİDİ
     function renderTapeSlider() {
       const track = document.getElementById('tapeTrack');
-      track.innerHTML = '';
+      const macroList = [
+        { code: 'XU100', name: 'BIST 100', defaultPrice: '9.120,40', defaultChange: '+%1.15' },
+        { code: 'XU050', name: 'BIST 50',  defaultPrice: '8.340,10', defaultChange: '+%0.95' },
+        { code: 'XU030', name: 'BIST 30',  defaultPrice: '9.980,50', defaultChange: '+%0.85' },
+        { code: 'USD',   name: 'USD/TRY',  defaultPrice: '34,28',    defaultChange: '+%0.05' },
+        { code: 'EUR',   name: 'EUR/TRY',  defaultPrice: '37,15',    defaultChange: '-%0.12' },
+        { code: 'GRAM',  name: 'GRAM ALTIN', defaultPrice: '3.025,00', defaultChange: '+%0.45' },
+        { code: 'ALTIN.S1', name: 'ALTIN.S1', defaultPrice: '68,55', defaultChange: '+%0.20' }
+      ];
 
-      // Tablodan çekilen gerçek endeks ve maden verilerini önceliklendir
-      const priorityList = ['XU100', 'XU050', 'XU030', 'USD', 'EUR', 'GRAM', 'ALTIN.S1', 'DOAS', 'TUPRS'];
-      priorityList.forEach(code => {
-        const item = globalData.find(d => d.code === code || d.code.includes(code));
-        if (item) {
-          const isUp = String(item.change).includes('+') || (!String(item.change).includes('-') && item.change !== '0' && item.change !== '%0,00');
-          const badgeClass = isUp ? 'up' : 'down';
-          
-          const el = document.createElement('div');
-          el.className = 'tape-item';
-          el.onclick = () => openStockDetail(item.code);
-          el.innerHTML = `
-            <span class="tape-title">${item.code}</span>
-            <span class="tape-val ${badgeClass}">${item.price} ₺ ${item.change}</span>
-          `;
-          track.appendChild(el);
-        }
+      let html = '';
+      macroList.forEach(m => {
+        // Tam kod eşleşmesi (EURASIA veya INGRAM karışmasını engeller)
+        const found = globalData.find(d => d.code === m.code || d.code === m.code.replace('.', ''));
+        const price = found ? found.price : m.defaultPrice;
+        const change = found ? found.change : m.defaultChange;
+        const isUp = String(change).includes('+') || (!String(change).includes('-') && change !== '0' && change !== '%0,00');
+        const badgeClass = isUp ? 'up' : 'down';
+
+        html += `
+          <div class="tape-item" onclick="openStockDetail('${m.code}')">
+            <span class="tape-title">${m.name}</span>
+            <span class="tape-val ${badgeClass}">${price} ₺ ${change}</span>
+          </div>
+        `;
       });
+
+      // Kesintisiz döngü için 2 kopya
+      track.innerHTML = html + html;
     }
 
+    // 3. ANASAYFA: YALNIZCA FAVORİLER
     function renderMainList() {
       const container = document.getElementById('stockListContainer');
       container.innerHTML = '';
-      document.getElementById('totalStockCount').innerText = globalData.length;
 
-      // Favoriler en üstte, sonra diğer tüm hisseler
-      let displayList = [...globalData].sort((a, b) => {
-        const aFav = favorites.includes(a.code) ? 1 : 0;
-        const bFav = favorites.includes(b.code) ? 1 : 0;
-        return bFav - aFav;
-      });
+      const favList = globalData.filter(d => favorites.includes(d.code));
+      document.getElementById('favCount').innerText = favList.length;
 
-      displayList.forEach(item => {
+      if (favList.length === 0) {
+        container.innerHTML = `
+          <div style="background:#0f172a; border:1px solid #1e293b; border-radius:14px; padding:30px; text-align:center; color:#64748b; font-size:13px; margin-top:10px;">
+            Henüz favori eklemediniz.<br>Yukarıdaki arama çubuğundan hisse arayarak favorilerinize ekleyebilirsiniz.
+          </div>
+        `;
+        return;
+      }
+
+      favList.forEach(item => {
         container.appendChild(createStockRow(item));
       });
     }
@@ -713,7 +747,6 @@
     function createStockRow(item) {
       const isUp = String(item.change).includes('+') || (!String(item.change).includes('-') && item.change !== '0' && item.change !== '%0,00');
       const badgeClass = isUp ? 'up' : 'down';
-      const isFav = favorites.includes(item.code);
 
       const div = document.createElement('div');
       div.className = 'stock-row';
@@ -722,7 +755,7 @@
         <div class="stock-left">
           <div class="stock-avatar">${item.code.substring(0,2)}</div>
           <div class="stock-meta">
-            <div class="stock-code">${item.code} ${isFav ? '⭐' : ''}</div>
+            <div class="stock-code">${item.code} ⭐</div>
             <div class="stock-title">${item.name}</div>
           </div>
         </div>
@@ -734,6 +767,7 @@
       return div;
     }
 
+    // 1. DOĞRUDAN HABERLER
     function renderNewsList() {
       const container = document.getElementById('newsListContainer');
       if (globalNews.length === 0) {
@@ -749,15 +783,16 @@
         div.innerHTML = `
           <span class="news-tag">${n.source}</span>
           <div class="news-title">${n.title}</div>
-          <div class="news-date">Tarih: ${n.date} • Haberi İncele ↗</div>
+          <div class="news-date">Tarih: ${n.date} • Haberi Oku ↗</div>
         `;
         container.appendChild(div);
       });
     }
 
+    // HİSSE DETAY & GOOGLE NEWS
     async function openStockDetail(code) {
       triggerHaptic();
-      const item = globalData.find(d => d.code === code) || { code: code, name: code, price: '0,00', change: '%0,00', type: 'bist' };
+      const item = globalData.find(d => d.code === code) || { code: code, name: code, price: '0,00', change: '%0,00' };
       selectedStockForModal = item;
 
       document.getElementById('modalStockCode').innerText = item.code;
@@ -786,7 +821,7 @@
       document.getElementById('detailModal').style.display = 'flex';
 
       const modalNews = document.getElementById('modalNewsContainer');
-      modalNews.innerHTML = '<div style="text-align:center; padding:20px; color:#64748b;">Haberler yükleniyor...</div>';
+      modalNews.innerHTML = '<div style="text-align:center; padding:20px; color:#64748b;">Haberler taranıyor...</div>';
 
       const localMatches = globalNews.filter(n => n.title.toUpperCase().includes(code));
       if (localMatches.length > 0) {
@@ -798,7 +833,7 @@
           if (json.news && json.news.length > 0) {
             renderModalNewsCards(json.news, modalNews);
           } else {
-            modalNews.innerHTML = '<div style="text-align:center; padding:20px; color:#64748b;">İlgili haber bulunamadı.</div>';
+            modalNews.innerHTML = '<div style="text-align:center; padding:20px; color:#64748b;">İlgili güncel haber bulunamadı.</div>';
           }
         } catch (e) {
           modalNews.innerHTML = '<div style="text-align:center; padding:20px; color:#64748b;">Haber servisine bağlanılamadı.</div>';
@@ -815,7 +850,7 @@
         div.innerHTML = `
           <div class="news-title">${n.title}</div>
           <div class="news-snippet">${n.snippet || ''}</div>
-          <div class="news-date">Haberi Aç ↗</div>
+          <div class="news-date">${n.date || ''} • Haberi Aç ↗</div>
         `;
         container.appendChild(div);
       });
@@ -841,6 +876,7 @@
       document.getElementById('detailModal').style.display = 'none';
     }
 
+    // ARAMA VE AUTOCOMPLETE
     function handlePortfolioSearch() {
       const q = document.getElementById('portfolioSearchInput').value.trim().toUpperCase();
       const box = document.getElementById('portfolioAutocompleteBox');
@@ -888,7 +924,7 @@
       box.style.display = 'block';
     }
 
-    // PORTFÖYE EKLEME VE DÜZENLEME MODAL FONKSİYONLARI
+    // PORTFÖY DÜZENLEME & SİLME
     function openAddPortfolioModal(stock, editIndex) {
       triggerHaptic();
       editingPositionIndex = editIndex;
@@ -973,7 +1009,7 @@
         const badgeSign = isUp ? '+' : '';
         const row = document.createElement('div');
         row.className = 'stock-row';
-        row.onclick = () => openAddPortfolioModal(cur, idx); // TIKLANDIĞINDA DÜZENLEME EKRANI AÇILIR
+        row.onclick = () => openAddPortfolioModal(cur, idx);
         row.innerHTML = `
           <div class="stock-left">
             <div class="stock-avatar">${pos.code.substring(0,2)}</div>

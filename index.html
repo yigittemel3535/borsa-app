@@ -19,6 +19,8 @@
       --red-bg: rgba(239, 68, 68, 0.15);
       --cyan: #38bdf8;
       --cyan-bg: rgba(56, 189, 248, 0.15);
+      --gold: #fbbf24;
+      --gold-bg: rgba(251, 191, 36, 0.15);
     }
 
     * {
@@ -50,11 +52,7 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
 
-    .status-row {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 10px;
-    }
+    .status-row { display: flex; justify-content: center; margin-bottom: 10px; }
     .status-chip {
       background: rgba(15, 23, 42, 0.8);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -67,20 +65,10 @@
       align-items: center;
       gap: 6px;
     }
-    .status-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #ef4444;
-    }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #ef4444; }
     .status-dot.open { background: #22c55e; }
 
-    .search-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      position: relative;
-    }
+    .search-row { display: flex; align-items: center; gap: 8px; position: relative; }
     .search-box {
       flex: 1;
       display: flex;
@@ -114,7 +102,7 @@
       font-size: 16px;
     }
 
-    /* KESİNTİSİZ KAYAN VE TIKLANABİLİR ENDEKS ŞERİDİ */
+    /* KESİNTİSİZ KAYAN VE TIKLANABİLİR SLIDE MENÜ */
     .tape-container {
       margin-top: 10px;
       overflow-x: auto;
@@ -123,11 +111,7 @@
       display: flex;
     }
     .tape-container::-webkit-scrollbar { display: none; }
-    
-    .tape-track {
-      display: flex;
-      gap: 8px;
-    }
+    .tape-track { display: flex; gap: 8px; }
 
     .tape-item {
       background: rgba(15, 23, 42, 0.7);
@@ -208,7 +192,7 @@
       display: inline-block;
       margin-bottom: 6px;
     }
-    .news-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; line-height: 1.3; }
+    .news-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; line-height: 1.4; color: #f1f5f9; }
     .news-snippet { font-size: 12px; color: #94a3b8; line-height: 1.4; }
     .news-date { font-size: 10px; color: #64748b; margin-top: 6px; }
 
@@ -276,6 +260,42 @@
       cursor: pointer;
     }
 
+    /* DİĞER / ARAÇLAR MENÜSÜ KARTLARI */
+    .tool-card {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .tool-card:hover { border-color: var(--cyan); }
+    .tool-left { display: flex; align-items: center; gap: 14px; }
+    .tool-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--gold-bg);
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    /* ALTIN PRİM ÖZEL EKRANI */
+    .metric-box {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
     /* FLOATING TABBAR */
     .tabbar-container {
       position: fixed;
@@ -331,10 +351,10 @@
     <div class="search-row">
       <div class="search-box">
         <span>🔍</span>
-        <input type="text" id="searchInput" placeholder="Hisse ara..." oninput="handleGlobalSearch()">
+        <input type="text" id="searchInput" placeholder="BIST hisse veya fon ara..." oninput="handleGlobalSearch()">
       </div>
       <div class="icon-btn" onclick="triggerHaptic()">🔔</div>
-      <div class="icon-btn" onclick="switchNav('diger')">⚙️</div>
+      <div class="icon-btn" onclick="openSettingsModal()">⚙️</div>
 
       <div class="autocomplete-list" id="autocompleteBox"></div>
     </div>
@@ -348,7 +368,7 @@
   <!-- 1. ANASAYFA -->
   <div id="view-anasayfa" class="page-section active">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-      <div style="font-size:18px; font-weight:700;">Hisseler & Favoriler (<span id="favCount">0</span>)</div>
+      <div style="font-size:18px; font-weight:700;">Tüm Hisseler & Favoriler (<span id="totalStockCount">0</span>)</div>
       <button style="background:var(--cyan-bg); border:1px solid rgba(56,189,248,0.3); color:var(--cyan); font-size:12px; font-weight:600; padding:6px 12px; border-radius:16px;" onclick="triggerHaptic()">🔔 Alarmlarım</button>
     </div>
     <div class="stock-list" id="stockListContainer"></div>
@@ -367,11 +387,11 @@
 
   <!-- 3. PORTFÖY -->
   <div id="view-portfoy" class="page-section">
-    <div style="font-size:13px; color:#64748b;">Toplam Varlık</div>
+    <div style="font-size:13px; color:#64748b;">Toplam Portföy Değeri</div>
     <div style="font-size:26px; font-weight:800; margin:4px 0 16px;" id="totalPortfolioValue">0,00 ₺</div>
 
     <div style="margin-bottom:14px; position:relative;">
-      <input type="text" id="portfolioSearchInput" placeholder="Hisse ara ve portföye ekle (örn: tup, asels)..." 
+      <input type="text" id="portfolioSearchInput" placeholder="Hisse ara ve portföye ekle (örn: tuprs, doas, asels)..." 
              style="width:100%; background:#0f172a; border:1px solid #1e293b; padding:12px 14px; border-radius:12px; color:#fff; outline:none;"
              oninput="handlePortfolioSearch()">
       <div class="autocomplete-list" id="portfolioAutocompleteBox"></div>
@@ -380,15 +400,77 @@
     <div id="portfolioListContainer"></div>
   </div>
 
-  <!-- 4. DİĞER -->
+  <!-- 4. DİĞER (ARAÇLAR MENÜSÜ) -->
   <div id="view-diger" class="page-section">
-    <div style="font-size:18px; font-weight:700; margin-bottom:16px;">Ayarlar</div>
-    <div style="background:#0f172a; border:1px solid #1e293b; border-radius:14px; padding:14px; display:flex; justify-content:space-between; margin-bottom:10px;">
-      <span>Koyu Tema</span><span style="color:var(--cyan); font-weight:700;">AÇIK</span>
+    <div style="font-size:18px; font-weight:700; margin-bottom:16px;">Finansal Araçlar</div>
+    
+    <!-- ALTIN.S1 Kartı -->
+    <div class="tool-card" onclick="openAltinPrimScreen()">
+      <div class="tool-left">
+        <div class="tool-icon">🪙</div>
+        <div>
+          <div style="font-size:15px; font-weight:700;">ALTIN.S1 Prim / İskonto</div>
+          <div style="font-size:11px; color:#64748b;">Darphane Sertifikası & Spot Altın Analizi</div>
+        </div>
+      </div>
+      <div style="color:var(--cyan); font-weight:800;">→</div>
     </div>
   </div>
 
-  <!-- DETAY MODALI (HİSSE VEYA ENDEKS İÇİN) -->
+  <!-- 5. ÖZEL ALTIN.S1 PRİM ANALİZ EKRANI (DİĞER İÇİNDEN AÇILIR) -->
+  <div id="view-altin-prim" class="page-section">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:18px;">
+      <button onclick="backToDiger()" style="background:#1e293b; border:none; color:#fff; font-size:14px; padding:6px 14px; border-radius:12px; cursor:pointer;">← Geri</button>
+      <div style="font-size:17px; font-weight:800;">ALTIN.S1 Prim / İskonto Analizi</div>
+    </div>
+
+    <!-- Büyük Sonuç Kartı -->
+    <div id="primResultCard" style="background:#0f172a; border:1px solid #1e293b; border-radius:18px; padding:20px; text-align:center; margin-bottom:16px;">
+      <div style="font-size:12px; color:#94a3b8; margin-bottom:4px;">Net Durum</div>
+      <div style="font-size:26px; font-weight:800;" id="primStatusBadge">Hesaplanıyor...</div>
+      <div style="font-size:13px; color:#64748b; margin-top:6px;" id="primDiffText">0,00 ₺ fark</div>
+    </div>
+
+    <!-- Metrik Kutuları -->
+    <div class="metric-box">
+      <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+        <span style="color:#94a3b8; font-size:13px;">ALTIN.S1 Son Fiyat</span>
+        <strong id="primAltinS1Price" style="font-size:15px;">0,00 ₺</strong>
+      </div>
+      <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+        <span style="color:#94a3b8; font-size:13px;">Sertifika Gram Karşılığı (100 Lot)</span>
+        <strong id="primSertifikaGram" style="font-size:15px; color:var(--gold);">0,00 ₺</strong>
+      </div>
+      <div style="display:flex; justify-content:space-between;">
+        <span style="color:#94a3b8; font-size:13px;">Spot Gram Altın</span>
+        <strong id="primSpotGram" style="font-size:15px;">0,00 ₺</strong>
+      </div>
+    </div>
+
+    <div style="background:#0f172a; border:1px solid #1e293b; border-radius:14px; padding:14px;">
+      <div style="font-size:12px; color:#64748b; line-height:1.5;">
+        ℹ️ <strong>Nasıl Hesaplanır?</strong> 1 Lot Darphane Altın Sertifikası (ALTIN.S1) tam olarak 0,01 gram has altına eşittir (100 Lot = 1 Gram). Sertifika fiyatının 100 katı ile piyasadaki spot gram altın arasındaki fark prim veya iskonto oranını verir.
+      </div>
+    </div>
+  </div>
+
+  <!-- AYARLAR MODAL (ÜSTTEKİ DİŞLİ İLE AÇILIR) -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <div style="font-size:18px; font-weight:800;">Uygulama Ayarları</div>
+        <button class="modal-close" onclick="closeSettingsModal()">✕</button>
+      </div>
+      <div style="background:#0f172a; border:1px solid #1e293b; border-radius:14px; padding:14px; display:flex; justify-content:space-between; margin-bottom:10px;">
+        <span>Koyu Tema</span><span style="color:var(--cyan); font-weight:700;">AÇIK</span>
+      </div>
+      <div style="background:#0f172a; border:1px solid #1e293b; border-radius:14px; padding:14px; display:flex; justify-content:space-between;">
+        <span>Titreşimli Geri Bildirim (Haptic)</span><span style="color:var(--cyan); font-weight:700;">AÇIK</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DETAY MODALI (HİSSE / ENDEKS) -->
   <div class="modal-overlay" id="detailModal">
     <div class="modal-sheet">
       <div class="modal-header">
@@ -404,13 +486,12 @@
 
       <div style="background:#0f172a; border:1px solid #1e293b; border-radius:14px; padding:14px; display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
         <div>
-          <div style="font-size:11px; color:#64748b;">Son Değer</div>
+          <div style="font-size:11px; color:#64748b;">Son Fiyat</div>
           <div style="font-size:20px; font-weight:800;" id="modalStockPrice">0,00 ₺</div>
         </div>
         <div id="modalStockBadge" class="stock-badge up">%0,00</div>
       </div>
 
-      <!-- Endeks Bileşenleri Alanı (Endekse tıklandığında açılır) -->
       <div id="modalIndexStocksContainer" style="display:none; margin-bottom:18px;">
         <div style="font-size:14px; font-weight:700; margin-bottom:8px; color:var(--cyan);">Endekse Dahil Hisseler</div>
         <div class="stock-list" id="modalIndexList"></div>
@@ -421,7 +502,7 @@
     </div>
   </div>
 
-  <!-- PORTFÖYE EKLEME MODAL -->
+  <!-- PORTFÖYE EKLEME / DÜZENLEME MODALI -->
   <div class="modal-overlay" id="addPortfolioModal">
     <div class="modal-sheet">
       <div class="modal-header">
@@ -437,7 +518,8 @@
           <label style="font-size:12px; color:#64748b;">Maliyet (Alış Fiyatı ₺)</label>
           <input type="number" step="0.01" id="addPriceInput" placeholder="Örn: 24.50" style="width:100%; background:#0f172a; border:1px solid #1e293b; padding:12px; border-radius:10px; color:#fff; outline:none; margin-top:4px;">
         </div>
-        <button onclick="saveStockToPortfolio()" style="background:var(--cyan); border:none; color:#030712; font-weight:700; padding:14px; border-radius:12px; margin-top:8px; cursor:pointer;">Portföye Kaydet</button>
+        <button onclick="saveStockToPortfolio()" style="background:var(--cyan); border:none; color:#030712; font-weight:700; padding:14px; border-radius:12px; margin-top:8px; cursor:pointer;" id="savePortfolioBtn">Portföye Kaydet</button>
+        <button onclick="deleteCurrentPosition()" id="deletePortfolioBtn" style="display:none; background:var(--red-bg); border:1px solid rgba(239,68,68,0.3); color:var(--red); font-weight:700; padding:12px; border-radius:12px; cursor:pointer;">Pozisyonu Sil</button>
       </div>
     </div>
   </div>
@@ -476,17 +558,16 @@
 
     let globalData = [];
     let globalNews = [];
-    let favorites = JSON.parse(localStorage.getItem('bist_favs')) || ['TUPRS', 'ALTIN.S1', 'THYAO', 'ASELS', 'AKSA', 'KCHOL'];
+    let favorites = JSON.parse(localStorage.getItem('bist_favs')) || ['DOAS', 'TUPRS', 'ALTIN.S1', 'THYAO', 'AKSA', 'KCHOL'];
     let myPortfolio = JSON.parse(localStorage.getItem('bist_portfolio')) || [];
     let isMarketOpenGlobal = false;
     let selectedStockForModal = null;
-    let selectedStockForAdd = null;
+    let editingPositionIndex = -1;
 
     function triggerHaptic() {
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
     }
 
-    // GÜVENLİ LİNK AÇMA (Engellenen Google News linklerini Telegram dışı tarayıcıda açar)
     function safeOpenLink(url) {
       if (!url || url === '#' || url === 'undefined') return;
       if (tg && typeof tg.openLink === 'function') {
@@ -496,7 +577,6 @@
       }
     }
 
-    // HER SANİYE AKAN CANLI SAAT MOTORU
     function startLiveClock() {
       setInterval(() => {
         const now = new Date();
@@ -522,12 +602,62 @@
       if (viewId === 'portfoy') renderPortfolio();
     }
 
+    function openSettingsModal() {
+      triggerHaptic();
+      document.getElementById('settingsModal').style.display = 'flex';
+    }
+    function closeSettingsModal() {
+      document.getElementById('settingsModal').style.display = 'none';
+    }
+
+    // DİĞER -> ALTIN.S1 GEÇİŞİ
+    function openAltinPrimScreen() {
+      triggerHaptic();
+      document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
+      document.getElementById('view-altin-prim').classList.add('active');
+      calculateAltinPrim();
+    }
+    function backToDiger() {
+      triggerHaptic();
+      document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
+      document.getElementById('view-diger').classList.add('active');
+    }
+
+    function calculateAltinPrim() {
+      const altinS1Item = globalData.find(d => d.code === 'ALTIN.S1' || d.code.includes('ALTIN.S1')) || { price: "68,55" };
+      const gramSpotItem = globalData.find(d => d.code === 'GRAM' || d.code.includes('HAS') || d.code === 'GA') || { price: "3.025,00" };
+
+      const s1Price = parseFloat(String(altinS1Item.price).replace('.','').replace(',','.')) || 68.55;
+      const spotPrice = parseFloat(String(gramSpotItem.price).replace('.','').replace(',','.')) || 3025.00;
+
+      const sertifikaGram = s1Price * 100;
+      const fark = sertifikaGram - spotPrice;
+      const yuzde = (fark / spotPrice) * 100;
+
+      document.getElementById('primAltinS1Price').innerText = s1Price.toFixed(2) + ' ₺';
+      document.getElementById('primSertifikaGram').innerText = sertifikaGram.toFixed(2) + ' ₺';
+      document.getElementById('primSpotGram').innerText = spotPrice.toFixed(2) + ' ₺';
+
+      const badge = document.getElementById('primStatusBadge');
+      const diffText = document.getElementById('primDiffText');
+
+      if (yuzde >= 0) {
+        badge.innerText = `📈 Primli (%+${yuzde.toFixed(2)})`;
+        badge.style.color = '#ef4444';
+        diffText.innerText = `Gram başına +${fark.toFixed(2)} ₺ daha pahalı`;
+      } else {
+        badge.innerText = `📉 İskontolu (%${yuzde.toFixed(2)})`;
+        badge.style.color = '#22c55e';
+        diffText.innerText = `Gram başına ${Math.abs(fark).toFixed(2)} ₺ daha ucuz`;
+      }
+    }
+
     async function refreshAllData() {
       try {
         const res = await fetch(API_ENDPOINT);
         const data = await res.json();
         
-        if (data.marketData) {
+        if (data.marketData && data.marketData.length > 0) {
           globalData = data.marketData;
           globalNews = data.news || [];
           isMarketOpenGlobal = data.status;
@@ -539,51 +669,49 @@
       } catch (err) {}
     }
 
-    // KAYAN VE TIKLANABİLİR ŞERİT
     function renderTapeSlider() {
       const track = document.getElementById('tapeTrack');
-      const wanted = ['XU100', 'XU050', 'XU030', 'USD', 'EUR', 'GRAM', 'ALTIN.S1'];
       track.innerHTML = '';
 
-      wanted.forEach(code => {
-        const item = globalData.find(d => d.code.toUpperCase().includes(code)) || { code: code, price: '0,00', change: '%0,00', name: code };
-        const isUp = item.change.includes('+') || (!item.change.includes('-') && item.change !== '0' && item.change !== '%0,00');
-        const badgeClass = isUp ? 'up' : 'down';
-        
-        const el = document.createElement('div');
-        el.className = 'tape-item';
-        el.onclick = () => openStockDetail(item.code);
-        el.innerHTML = `
-          <span class="tape-title">${item.code}</span>
-          <span class="tape-val ${badgeClass}">${item.price} ${item.change}</span>
-        `;
-        track.appendChild(el);
+      // Tablodan çekilen gerçek endeks ve maden verilerini önceliklendir
+      const priorityList = ['XU100', 'XU050', 'XU030', 'USD', 'EUR', 'GRAM', 'ALTIN.S1', 'DOAS', 'TUPRS'];
+      priorityList.forEach(code => {
+        const item = globalData.find(d => d.code === code || d.code.includes(code));
+        if (item) {
+          const isUp = String(item.change).includes('+') || (!String(item.change).includes('-') && item.change !== '0' && item.change !== '%0,00');
+          const badgeClass = isUp ? 'up' : 'down';
+          
+          const el = document.createElement('div');
+          el.className = 'tape-item';
+          el.onclick = () => openStockDetail(item.code);
+          el.innerHTML = `
+            <span class="tape-title">${item.code}</span>
+            <span class="tape-val ${badgeClass}">${item.price} ₺ ${item.change}</span>
+          `;
+          track.appendChild(el);
+        }
       });
     }
 
-    // ANA SAYFA LİSTESİ
     function renderMainList() {
       const container = document.getElementById('stockListContainer');
       container.innerHTML = '';
+      document.getElementById('totalStockCount').innerText = globalData.length;
 
-      // Favoriler en üstte, sonra diğer hisseler
+      // Favoriler en üstte, sonra diğer tüm hisseler
       let displayList = [...globalData].sort((a, b) => {
         const aFav = favorites.includes(a.code) ? 1 : 0;
         const bFav = favorites.includes(b.code) ? 1 : 0;
         return bFav - aFav;
       });
 
-      document.getElementById('favCount').innerText = favorites.length;
-
       displayList.forEach(item => {
-        if (item.type !== 'endeks') {
-          container.appendChild(createStockRow(item));
-        }
+        container.appendChild(createStockRow(item));
       });
     }
 
     function createStockRow(item) {
-      const isUp = item.change.includes('+') || (!item.change.includes('-') && item.change !== '0' && item.change !== '%0,00');
+      const isUp = String(item.change).includes('+') || (!String(item.change).includes('-') && item.change !== '0' && item.change !== '%0,00');
       const badgeClass = isUp ? 'up' : 'down';
       const isFav = favorites.includes(item.code);
 
@@ -606,7 +734,6 @@
       return div;
     }
 
-    // HABERLER LİSTESİ (Sütun kayması düzeltildi)
     function renderNewsList() {
       const container = document.getElementById('newsListContainer');
       if (globalNews.length === 0) {
@@ -622,13 +749,12 @@
         div.innerHTML = `
           <span class="news-tag">${n.source}</span>
           <div class="news-title">${n.title}</div>
-          <div class="news-date">${n.date} • Habere Git ↗</div>
+          <div class="news-date">Tarih: ${n.date} • Haberi İncele ↗</div>
         `;
         container.appendChild(div);
       });
     }
 
-    // HİSSE & ENDEKS DETAY MODAL
     async function openStockDetail(code) {
       triggerHaptic();
       const item = globalData.find(d => d.code === code) || { code: code, name: code, price: '0,00', change: '%0,00', type: 'bist' };
@@ -638,20 +764,19 @@
       document.getElementById('modalStockName').innerText = item.name;
       document.getElementById('modalStockPrice').innerText = item.price + ' ₺';
       
-      const isUp = item.change.includes('+') || (!item.change.includes('-') && item.change !== '0' && item.change !== '%0,00');
+      const isUp = String(item.change).includes('+') || (!String(item.change).includes('-') && item.change !== '0' && item.change !== '%0,00');
       const badge = document.getElementById('modalStockBadge');
       badge.className = 'stock-badge ' + (isUp ? 'up' : 'down');
       badge.innerText = item.change;
 
       updateModalFavIcon();
 
-      // Endeks tıklandıysa (XU100, XU030 vb.) hisse bileşenlerini listele
       const indexContainer = document.getElementById('modalIndexStocksContainer');
       const indexList = document.getElementById('modalIndexList');
       if (item.type === 'endeks' || item.code.startsWith('XU')) {
         indexContainer.style.display = 'block';
         indexList.innerHTML = '';
-        globalData.filter(d => d.type === 'bist' || (!d.type && !d.code.startsWith('XU'))).forEach(st => {
+        globalData.filter(d => d.type === 'bist' || !d.code.startsWith('XU')).slice(0, 15).forEach(st => {
           indexList.appendChild(createStockRow(st));
         });
       } else {
@@ -660,7 +785,6 @@
 
       document.getElementById('detailModal').style.display = 'flex';
 
-      // İlgili Haberler
       const modalNews = document.getElementById('modalNewsContainer');
       modalNews.innerHTML = '<div style="text-align:center; padding:20px; color:#64748b;">Haberler yükleniyor...</div>';
 
@@ -717,7 +841,6 @@
       document.getElementById('detailModal').style.display = 'none';
     }
 
-    // ARAMA VE AUTOCOMPLETE
     function handlePortfolioSearch() {
       const q = document.getElementById('portfolioSearchInput').value.trim().toUpperCase();
       const box = document.getElementById('portfolioAutocompleteBox');
@@ -730,7 +853,7 @@
       matches.forEach(m => {
         const item = document.createElement('div');
         item.className = 'autocomplete-item';
-        item.onclick = () => openAddPortfolioModal(m);
+        item.onclick = () => openAddPortfolioModal(m, -1);
         item.innerHTML = `
           <div><strong>${m.code}</strong> - <span style="font-size:12px; color:#94a3b8;">${m.name}</span></div>
           <div style="font-weight:700;">${m.price} ₺</div>
@@ -765,14 +888,29 @@
       box.style.display = 'block';
     }
 
-    // PORTFÖY MODALI
-    function openAddPortfolioModal(stock) {
+    // PORTFÖYE EKLEME VE DÜZENLEME MODAL FONKSİYONLARI
+    function openAddPortfolioModal(stock, editIndex) {
       triggerHaptic();
-      selectedStockForAdd = stock;
+      editingPositionIndex = editIndex;
       document.getElementById('portfolioAutocompleteBox').style.display = 'none';
-      document.getElementById('addStockTitle').innerText = `${stock.code} Portföye Ekle`;
-      document.getElementById('addPriceInput').value = parseFloat(stock.price.replace('.','').replace(',','.'));
-      document.getElementById('addLotInput').value = '';
+
+      if (editIndex >= 0) {
+        const pos = myPortfolio[editIndex];
+        document.getElementById('addStockTitle').innerText = `${pos.code} Pozisyonunu Düzenle`;
+        document.getElementById('addLotInput').value = pos.lot;
+        document.getElementById('addPriceInput').value = pos.cost;
+        document.getElementById('savePortfolioBtn').innerText = 'Güncelle';
+        document.getElementById('deletePortfolioBtn').style.display = 'block';
+      } else {
+        document.getElementById('addStockTitle').innerText = `${stock.code} Portföye Ekle`;
+        const pNum = parseFloat(String(stock.price).replace('.','').replace(',','.'));
+        document.getElementById('addPriceInput').value = !isNaN(pNum) ? pNum : '';
+        document.getElementById('addLotInput').value = '';
+        document.getElementById('savePortfolioBtn').innerText = 'Portföye Kaydet';
+        document.getElementById('deletePortfolioBtn').style.display = 'none';
+        selectedStockForAdd = stock;
+      }
+
       document.getElementById('addPortfolioModal').style.display = 'flex';
     }
 
@@ -786,10 +924,26 @@
       const cost = parseFloat(document.getElementById('addPriceInput').value);
       if (!lot || !cost) return;
 
-      myPortfolio.push({ code: selectedStockForAdd.code, lot: lot, cost: cost });
+      if (editingPositionIndex >= 0) {
+        myPortfolio[editingPositionIndex].lot = lot;
+        myPortfolio[editingPositionIndex].cost = cost;
+      } else {
+        myPortfolio.push({ code: selectedStockForAdd.code, lot: lot, cost: cost });
+      }
+
       localStorage.setItem('bist_portfolio', JSON.stringify(myPortfolio));
       closeAddModal();
       document.getElementById('portfolioSearchInput').value = '';
+      renderPortfolio();
+    }
+
+    function deleteCurrentPosition() {
+      triggerHaptic();
+      if (editingPositionIndex >= 0) {
+        myPortfolio.splice(editingPositionIndex, 1);
+        localStorage.setItem('bist_portfolio', JSON.stringify(myPortfolio));
+      }
+      closeAddModal();
       renderPortfolio();
     }
 
@@ -807,16 +961,19 @@
       let totalVal = 0;
       container.innerHTML = '';
 
-      myPortfolio.forEach(pos => {
+      myPortfolio.forEach((pos, idx) => {
         const cur = globalData.find(d => d.code === pos.code) || { price: pos.cost.toString(), change: '%0' };
-        const priceNum = parseFloat(cur.price.replace('.','').replace(',','.')) || pos.cost;
-        const val = priceNum * pos.lot;
+        const priceNum = parseFloat(String(cur.price).replace('.','').replace(',','.')) || pos.cost;
+        const currentTotal = priceNum * pos.lot;
+        const profitTL = (priceNum - pos.cost) * pos.lot;
         const profitPct = ((priceNum - pos.cost) / pos.cost) * 100;
-        totalVal += val;
+        totalVal += currentTotal;
 
-        const isUp = profitPct >= 0;
+        const isUp = profitTL >= 0;
+        const badgeSign = isUp ? '+' : '';
         const row = document.createElement('div');
         row.className = 'stock-row';
+        row.onclick = () => openAddPortfolioModal(cur, idx); // TIKLANDIĞINDA DÜZENLEME EKRANI AÇILIR
         row.innerHTML = `
           <div class="stock-left">
             <div class="stock-avatar">${pos.code.substring(0,2)}</div>
@@ -826,8 +983,10 @@
             </div>
           </div>
           <div class="stock-right">
-            <div class="stock-price">${val.toLocaleString('tr-TR', {minimumFractionDigits: 2})} ₺</div>
-            <div class="stock-badge ${isUp ? 'up' : 'down'}">${isUp ? '+' : ''}${profitPct.toFixed(2)}%</div>
+            <div class="stock-price">${currentTotal.toLocaleString('tr-TR', {minimumFractionDigits: 2})} ₺</div>
+            <div class="stock-badge ${isUp ? 'up' : 'down'}">
+              ${badgeSign}${profitTL.toLocaleString('tr-TR', {minimumFractionDigits: 2})} ₺ (${badgeSign}%${profitPct.toFixed(2)})
+            </div>
           </div>
         `;
         container.appendChild(row);
